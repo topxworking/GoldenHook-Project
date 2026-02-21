@@ -30,6 +30,8 @@ public class PhototypeGame : MonoBehaviour
         reelBtn.onClick.AddListener(OnReel);
         upgradeBtn.onClick.AddListener(OnUpgrade);
         autoFishing.onClick.AddListener(OnAuto);
+
+        RefreshUI();
     }
 
     void Update()
@@ -58,8 +60,6 @@ public class PhototypeGame : MonoBehaviour
         }
 
         if (autoMode && state == State.Hooked) OnReel();
-
-        RefreshUI();
     }
 
     void OnCast()
@@ -68,6 +68,7 @@ public class PhototypeGame : MonoBehaviour
         state = State.Waiting;
         timer = waitTime / rodLevel;
         statusText.text = "Casting...";
+        RefreshUI();
     }
 
     void OnReel()
@@ -89,6 +90,7 @@ public class PhototypeGame : MonoBehaviour
 
         reelBtn.gameObject.SetActive(false);
         castBtn.gameObject.SetActive(true);
+        RefreshUI();
     }
 
     void OnUpgrade()
@@ -98,6 +100,7 @@ public class PhototypeGame : MonoBehaviour
         rodLevel++;
         rodCost = rodCost * 3;
         statusText.text = $"Rod Upgraded to Level {rodLevel}!";
+        RefreshUI();
     }
 
     void RefreshUI()
@@ -105,10 +108,15 @@ public class PhototypeGame : MonoBehaviour
         moneyText.text = $"${money:N0}";
         upgradeCostText.text = $"Upgrade Rod Lv{rodLevel + 1}: ${rodCost}";
         upgradeBtn.interactable = money >= rodCost;
+
+        castBtn.interactable = !autoMode;
+        reelBtn.interactable = !autoMode;
     }
 
     void OnAuto()
     {
         autoMode = !autoMode;
+        statusText.text = autoMode ? "Auto: ON" : "Auto: OFF";
+        RefreshUI();
     }
 }
