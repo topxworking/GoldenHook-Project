@@ -8,6 +8,9 @@ public class PhototypeGame : MonoBehaviour
     int rodLevel = 1;
     int rodCost = 100;
 
+    public bool autoMode = false;
+    float autoTimer = 0f;
+
     enum State { Idle, Waiting, Hooked }
     State state = State.Idle;
     float timer = 0f;
@@ -18,6 +21,7 @@ public class PhototypeGame : MonoBehaviour
     public Button castBtn;
     public Button reelBtn;
     public Button upgradeBtn;
+    public Button autoFishing;
     public TextMeshProUGUI upgradeCostText;
 
     void Start()
@@ -25,6 +29,7 @@ public class PhototypeGame : MonoBehaviour
         castBtn.onClick.AddListener(OnCast);
         reelBtn.onClick.AddListener(OnReel);
         upgradeBtn.onClick.AddListener(OnUpgrade);
+        autoFishing.onClick.AddListener(OnAuto);
     }
 
     void Update()
@@ -41,6 +46,19 @@ public class PhototypeGame : MonoBehaviour
                 reelBtn.gameObject.SetActive(true);
             }
         }
+
+        if (autoMode && state == State.Idle)
+        {
+            autoTimer += Time.deltaTime;
+            if (autoTimer >= waitTime * 1.5f)
+            {
+                autoTimer = 0f;
+                OnCast();
+            }
+        }
+
+        if (autoMode && state == State.Hooked) OnReel();
+
         RefreshUI();
     }
 
@@ -71,7 +89,6 @@ public class PhototypeGame : MonoBehaviour
 
         reelBtn.gameObject.SetActive(false);
         castBtn.gameObject.SetActive(true);
-        RefreshUI();
     }
 
     void OnUpgrade()
@@ -81,7 +98,6 @@ public class PhototypeGame : MonoBehaviour
         rodLevel++;
         rodCost = rodCost * 3;
         statusText.text = $"Rod Upgraded to Level {rodLevel}!";
-        RefreshUI();
     }
 
     void RefreshUI()
@@ -89,5 +105,10 @@ public class PhototypeGame : MonoBehaviour
         moneyText.text = $"${money:N0}";
         upgradeCostText.text = $"Upgrade Rod Lv{rodLevel + 1}: ${rodCost}";
         upgradeBtn.interactable = money >= rodCost;
+    }
+
+    void OnAuto()
+    {
+        autoMode = !autoMode;
     }
 }
