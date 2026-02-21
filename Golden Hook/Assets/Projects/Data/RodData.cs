@@ -1,16 +1,23 @@
 using UnityEngine;
 
-public class RodData : MonoBehaviour
+[CreateAssetMenu(fileName = "RodData", menuName = "FishingGame/RodData")]
+public class RodData : ScriptableObject
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [Header("Identity")]
+    public string rodName;
+    public Sprite rodSprite;
+    public int level = 1;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [Header("Stats")]
+    public float castingSpeed = 1f;
+    public float catchRateBonus = 0f;
+    public float rarityBonus = 0f;
+    public float autoFishInterval = 0f;
+
+    [Header("Economy")]
+    public int upgradeCost = 100;
+    public RodData nextUpgrade;
+
+    [Header("Unlock")]
+    public bool isUnlocked = false;
 }
