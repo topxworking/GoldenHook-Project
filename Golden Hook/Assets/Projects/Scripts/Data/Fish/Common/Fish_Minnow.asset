@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Fish_Minnow
   m_EditorClassIdentifier: Assembly-CSharp::FishData
   fishName: Minnow
-  fishSprite: {fileID: 0}
+  fishSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   rarity: 0
-  minWeigth: 0.1
-  maxWeigth: 0.5
+  minWeight: 0.1
+  maxWeight: 0.5
   basePrice: 5
   catchDifficuty: 1
   catchChanceModifier: 1

@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Fish_Swordfish
   m_EditorClassIdentifier: Assembly-CSharp::FishData
   fishName: Swordfish
-  fishSprite: {fileID: 0}
+  fishSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   rarity: 2
-  minWeigth: 3
-  maxWeigth: 15
+  minWeight: 3
+  maxWeight: 15
   basePrice: 400
   catchDifficuty: 1
   catchChanceModifier: 1

@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Fish_Snakehead
   m_EditorClassIdentifier: Assembly-CSharp::FishData
   fishName: Snakehead
-  fishSprite: {fileID: 0}
+  fishSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   rarity: 0
-  minWeigth: 0.3
-  maxWeigth: 1.5
+  minWeight: 0.3
+  maxWeight: 1.5
   basePrice: 15
   catchDifficuty: 1
   catchChanceModifier: 1

@@ -6,7 +6,7 @@ public class FishController : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private float lifetime = 2f;
     [SerializeField] private float jumpHeight = 1.5f;
-    [SerializeField] private float moveSpeed = 3f;
+    //[SerializeField] private float moveSpeed = 3f;
 
     public event Action<FishController> OnReturnToPool;
 

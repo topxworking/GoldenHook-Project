@@ -125,7 +125,7 @@ public class FishingUI : MonoBehaviour
         _isAutoMode = !_isAutoMode;
         _fishing?.ToggleAutoFishing(_isAutoMode);
         if (autoTaggleButton != null)
-            autoTaggleButton.GetComponent<TextMeshProUGUI>().text =
+            autoTaggleButton.GetComponentInChildren<TextMeshProUGUI>().text =
                 _isAutoMode ? "Auto: ON" : "Auto : OFF";
         castButton?.gameObject.SetActive(!_isAutoMode);
     }

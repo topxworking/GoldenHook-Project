@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Fish_Dragon
   m_EditorClassIdentifier: Assembly-CSharp::FishData
   fishName: Dragon
-  fishSprite: {fileID: 0}
+  fishSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   rarity: 3
-  minWeigth: 10
-  maxWeigth: 50
+  minWeight: 10
+  maxWeight: 50
   basePrice: 2000
   catchDifficuty: 1
   catchChanceModifier: 1
