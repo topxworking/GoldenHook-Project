@@ -1,16 +1,22 @@
 using UnityEngine;
 
-public class WorkerData : MonoBehaviour
+[CreateAssetMenu(fileName = "WorkerData", menuName = "FishingGame/WorkerData")]
+public class WorkerData : ScriptableObject
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [Header("Identity")]
+    public string workerName;
+    public Sprite workerSprite;
+    public int level = 1;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [Header("Stats")]
+    public float fishingSpeed = 1f;
+    public float incomeBonus = 0.1f;
+
+    [Header("Economy")]
+    public int hireCost = 200;
+    public int upgradeCost = 300;
+    public WorkerData nextUpgrade;
+
+    [Header("Unlock")]
+    public bool isUnlocked = false;
 }
