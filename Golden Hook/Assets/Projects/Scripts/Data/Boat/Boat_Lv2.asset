@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 665f7b2d2e34d3b4ca40a1dff21240fb, type: 3}
   m_Name: Boat_Lv2
   m_EditorClassIdentifier: Assembly-CSharp::BoatData
-  boatName: 
+  boatName: Fishing Boat
   boatSprite: {fileID: 0}
-  level: 1
-  workerSlots: 1
-  incomeMultiplier: 1
+  level: 2
+  workerSlots: 2
+  incomeMultiplier: 1.5
   storageCapacity: 20
-  upgradeCost: 500
-  nextUpgrade: {fileID: 0}
-  isUnlocked: 0
+  upgradeCost: 1000
+  nextUpgrade: {fileID: 11400000, guid: 92dd4422547bf4342b521458087cfc40, type: 2}
+  isUnlocked: 1

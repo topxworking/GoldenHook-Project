@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 665f7b2d2e34d3b4ca40a1dff21240fb, type: 3}
-  m_Name: Boat_Lv4
-  m_EditorClassIdentifier: Assembly-CSharp::BoatData
-  boatName: Research Vessel
-  boatSprite: {fileID: 0}
-  level: 4
-  workerSlots: 6
-  incomeMultiplier: 4
-  storageCapacity: 20
-  upgradeCost: 100000
+  m_Script: {fileID: 11500000, guid: 32a1869bd02efde4a956b4bbfba876dc, type: 3}
+  m_Name: Worker_Lv1
+  m_EditorClassIdentifier: Assembly-CSharp::WorkerData
+  workerName: Fisher Joe
+  workerSprite: {fileID: 0}
+  level: 1
+  fishingSpeed: 1
+  incomeBonus: 0.1
+  hireCost: 200
+  upgradeCost: 300
   nextUpgrade: {fileID: 0}
   isUnlocked: 1

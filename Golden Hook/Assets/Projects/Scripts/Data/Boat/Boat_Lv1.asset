@@ -19,5 +19,5 @@ MonoBehaviour:
   incomeMultiplier: 1
   storageCapacity: 20
   upgradeCost: 0
-  nextUpgrade: {fileID: 0}
+  nextUpgrade: {fileID: 11400000, guid: 5745d3e5062f0a7459f54628047cd804, type: 2}
   isUnlocked: 1

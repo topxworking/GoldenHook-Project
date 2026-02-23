@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb21b97935f053e4594473867f0b94b5, type: 3}
+  m_Name: Zone2_DeepSea
+  m_EditorClassIdentifier: Assembly-CSharp::SeaZoneData
+  zoneName: Deep Sea
+  zoneBackground: {fileID: 0}
+  zoneThemeColor: {r: 0.050980393, g: 0.16862746, b: 0.27058825, a: 1}
+  ZoneIndex: 1
+  fishPool:
+  - fishData: {fileID: 11400000, guid: 0675e44f374699b42a208a3692477d9e, type: 2}
+    spawnWeightOveride: 0
+  - fishData: {fileID: 11400000, guid: debfd0205cb1e0c46a4a16be1daab2d8, type: 2}
+    spawnWeightOveride: 0
+  - fishData: {fileID: 11400000, guid: 956d01b4125b5644eba8bf7fd1a3d2e6, type: 2}
+    spawnWeightOveride: 0
+  - fishData: {fileID: 11400000, guid: a6e295575ec9ee349a5110d388422de7, type: 2}
+    spawnWeightOveride: 0
+  - fishData: {fileID: 11400000, guid: db94642cb0107b64c83ad8607ab9bb9b, type: 2}
+    spawnWeightOveride: 0
+  isUnlocked: 0
+  unlockCost: 5000
+  reqiredZoneIndex: 0
+  rareFishBonus: 0.05
+  incomeMultipier: 1.8
