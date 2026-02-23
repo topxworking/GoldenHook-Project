@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class ZoneManager : MonoBehaviour
@@ -22,6 +22,10 @@ public class ZoneManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log($"[ZoneManager] Total zones: {allZones.Count}");
+        foreach (var zone in allZones)
+            Debug.Log($"  - {zone.zoneName}, unlocked: {zone.isUnlocked}");
+
         foreach (var zone in allZones)
         {
             if (zone.isUnlocked)
@@ -42,14 +46,10 @@ public class ZoneManager : MonoBehaviour
     {
         if (zone.isUnlocked) return false;
 
-        if (zone.reqiredZoneIndex >= 0)
+        if (zone.requiredZoneIndex >= 0)
         {
-            var prereq = allZones.Find(z => z.ZoneIndex == zone.reqiredZoneIndex);
-            if (prereq != null && !prereq.isUnlocked)
-            {
-                Debug.Log($"[Zone] Must unlock zone '{prereq.zoneName}' first.");
-                return false;
-            }
+            var prereq = allZones.Find(z => z.ZoneIndex == zone.requiredZoneIndex);
+            if (prereq != null && !prereq.isUnlocked) return false;
         }
 
         if (!EconomyManager.Instance.TrySpend(zone.unlockCost)) return false;

@@ -24,7 +24,7 @@ public class SeaZoneData : ScriptableObject
     [Header("Unlock")]
     public bool isUnlocked = false;
     public int unlockCost = 0;
-    public int reqiredZoneIndex = -1;
+    public int requiredZoneIndex = -1;
 
     [Header("Zone Modifiers")]
     public float rareFishBonus = 0f;

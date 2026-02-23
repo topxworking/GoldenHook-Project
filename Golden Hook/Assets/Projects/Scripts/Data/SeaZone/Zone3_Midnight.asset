@@ -33,6 +33,6 @@ MonoBehaviour:
     spawnWeightOveride: 0
   isUnlocked: 0
   unlockCost: 50000
-  reqiredZoneIndex: 1
+  requiredZoneIndex: 1
   rareFishBonus: 0.1
   incomeMultipier: 3.5

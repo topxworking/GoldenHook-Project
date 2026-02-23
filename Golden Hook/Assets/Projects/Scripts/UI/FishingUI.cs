@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -58,6 +58,7 @@ public class FishingUI : MonoBehaviour
         reelPrompt?.SetActive(false);
 
         RefreshUpgradeUI();
+        RefreshZonePanel();
     }
 
     private void OnEnable()
@@ -152,6 +153,7 @@ public class FishingUI : MonoBehaviour
     {
         if (moneyText != null) moneyText.text = $"${e.NewAmount:N0}";
         RefreshUpgradeUI();
+        RefreshZonePanel();
     }
 
     private void OnUpgradeEvent(UpgradeEvent e) => RefreshUpgradeUI();
@@ -195,13 +197,13 @@ public class FishingUI : MonoBehaviour
 
             if (txt != null) txt.text = label ;
 
-            var captureedZone = zone;
+            var capturedZone = zone;
             btn?.onClick.AddListener(() =>
             {
-                if (captureedZone.isUnlocked)
-                    ZoneManager.Instance.SwitchToZone(captureedZone);
+                if (capturedZone.isUnlocked)
+                    ZoneManager.Instance.SwitchToZone(capturedZone);
                 else
-                    ZoneManager.Instance.TryUnlockZone(captureedZone);
+                    ZoneManager.Instance.TryUnlockZone(capturedZone);
             });
 
             btn.interactable = zone.isUnlocked ||
