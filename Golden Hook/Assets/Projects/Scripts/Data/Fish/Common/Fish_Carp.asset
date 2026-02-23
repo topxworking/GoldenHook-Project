@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32aa04e1a914d3c49bf33e707f510e1c, type: 3}
   m_Name: Fish_Carp
   m_EditorClassIdentifier: Assembly-CSharp::FishData
-  fishName: 
+  fishName: Carp
   fishSprite: {fileID: 0}
   rarity: 0
-  minWeigth: 0
-  maxWeigth: 0
-  basePrice: 0
+  minWeigth: 0.5
+  maxWeigth: 2
+  basePrice: 10
   catchDifficuty: 1
   catchChanceModifier: 1
