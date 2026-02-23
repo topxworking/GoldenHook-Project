@@ -4,9 +4,9 @@ using UnityEngine;
 
 public struct FishCaughtEvent
 {
-    public FishData fishData;
-    public float weight;
-    public int sellPrice;
+    public FishData FishData;
+    public float Weight;
+    public int SellPrice;
 }
 
 public struct MoneyChangedEvent
@@ -39,7 +39,7 @@ public static class EventManager
         _listeners[key].Add(callback);
     }
 
-    public static void UnSubscribe<T>(Action<T> callback)
+    public static void Unsubscribe<T>(Action<T> callback)
     {
         var key = typeof(T);
         if (_listeners.ContainsKey(key))

@@ -11,8 +11,8 @@ public class FishData : ScriptableObject
     public FishRarity rarity;
 
     [Header("Stats")]
-    public float minWeigth;
-    public float maxWeigth;
+    public float minWeight;
+    public float maxWeight;
     public int basePrice;
     public float catchDifficuty = 1f; // 1 = easy, 5 = hard
 

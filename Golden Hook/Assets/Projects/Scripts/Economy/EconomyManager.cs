@@ -23,11 +23,13 @@ public class EconomyManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.Subscribe<FishCaughtEvent>(OnFishCaught);
+        EventManager.Subscribe<UpgradeEvent>(OnUpgrade);
     }
 
     private void OnDisable()
     {
-        
+        EventManager.Unsubscribe<FishCaughtEvent>(OnFishCaught);
+        EventManager.Unsubscribe<UpgradeEvent>(OnUpgrade);
     }
 
     private void Update()
