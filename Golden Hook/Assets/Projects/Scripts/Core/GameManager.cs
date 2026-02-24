@@ -30,6 +30,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(LoadGameDelayed());
+    }
+
+    private System.Collections.IEnumerator LoadGameDelayed()
+    {
+        yield return null;
         LoadGame();
     }
 
@@ -64,7 +70,7 @@ public class GameManager : MonoBehaviour
         if (!PlayerPrefs.HasKey(KEY_MONEY)) return;
 
         int savedMoney = PlayerPrefs.GetInt(KEY_MONEY, 0);
-        EconomyManager.Instance?.AddMoney(savedMoney);
+        EconomyManager.Instance?.SetMoney(savedMoney);
 
         int rodIndex = PlayerPrefs.GetInt(KEY_ROD_INDEX, 0);
         ApplyRodIndex(rodIndex);

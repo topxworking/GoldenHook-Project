@@ -76,7 +76,26 @@ public class EconomyManager : MonoBehaviour
         });
     }
 
-    public void SetPassiveIncome(float perSecond) => _passiveIncomePerSecond = perSecond;
+    public void SetMoney(int amount)
+    {
+        int old = CurrentMoney;
+        CurrentMoney = Mathf.Max(0, amount);
+
+        EventManager.Publish(new MoneyChangedEvent
+        {
+            OldAmount = old,
+            NewAmount = CurrentMoney,
+            Delta = amount - old,
+        });
+    }
+
+    public float PassiveIncome { get; private set; }
+
+    public void SetPassiveIncome(float amount)
+    {
+        PassiveIncome = amount;
+        _passiveIncomePerSecond = amount;
+    }
 
     private void RecalculatePassiveIncome()
     {

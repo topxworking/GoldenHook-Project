@@ -26,12 +26,12 @@ public class FishPool : MonoBehaviour
         return fish;
     }
 
-    public FishController Get(FishData date, Vector3 spawnPos)
+    public FishController Get(FishData data, Vector3 spawnPos)
     {
         if (_pool.Count == 0) CreatePooledFish();
-
         var fish = _pool.Dequeue();
         fish.transform.position = spawnPos;
+        fish.Initialize(data);
         fish.gameObject.SetActive(true);
         return fish;
     }

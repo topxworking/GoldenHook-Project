@@ -93,9 +93,7 @@ public class FishingUI : MonoBehaviour
         }
 
         if (passiveIncomeText != null && EconomyManager.Instance != null)
-            passiveIncomeText.text = $"+${EconomyManager.Instance.CurrentMoney}/s passive";
-
-        RefreshUpgradeUI();
+            passiveIncomeText.text = $"+${EconomyManager.Instance.PassiveIncome:F2}/s passive";
     }
 
     public void SetStatus(string msg)
@@ -191,13 +189,13 @@ public class FishingUI : MonoBehaviour
         int workerCost = _upgrade.GetWorkerHireCost();
         int money = EconomyManager.Instance?.CurrentMoney ?? 0;
 
-        if (rodCostText != null) rodCostText.text = rodCost > 0 ? $"Upgrade Rod: ${rodCost}" : "Rod: MAX";
-        if (boatCostText != null) boatCostText.text = boatCost > 0 ? $"Upgrade Boat: ${boatCost}" : "Boat: MAX";
-        if (workerCostText != null) workerCostText.text = workerCost > 0 ? $"Hire Worker: ${workerCost}" : "N/A";
+        if (rodCostText != null) rodCostText.text = rodCost > 0 ? $"${rodCost}" : "MAX";
+        if (boatCostText != null) boatCostText.text = boatCost > 0 ? $"${boatCost}" : "MAX";
+        if (workerCostText != null) workerCostText.text = workerCost > 0 ? $"${workerCost}" : "N/A";
         if (workerCountText != null) workerCountText.text = $"Workers: {_upgrade.WorkerCount}/{_upgrade.MaxWorkers}";
 
         if (upgradeRodButton != null) upgradeRodButton.interactable = _upgrade.CanUpgradeRod() && money >= rodCost;
-        if (workerCountText != null) upgradeBoatButton.interactable = _upgrade.CanUpgradeBoat() && money >= boatCost;
+        if (upgradeBoatButton != null) upgradeBoatButton.interactable = _upgrade.CanUpgradeBoat() && money >= boatCost;
         if (hireWorkerButton != null) hireWorkerButton.interactable = _upgrade.CanHireWorker() && money >= workerCost;
     }
 
@@ -216,7 +214,7 @@ public class FishingUI : MonoBehaviour
 
             string label = zone.isUnlocked
                 ? zone.zoneName
-                : $"{zone.zoneName} (${zone.unlockCost}";
+                : $"{zone.zoneName} (${zone.unlockCost})";
 
             if (txt != null) txt.text = label ;
 

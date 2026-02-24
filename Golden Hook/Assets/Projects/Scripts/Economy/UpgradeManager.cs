@@ -112,7 +112,7 @@ public class UpgradeManager : MonoBehaviour
         if (CurrentBoat?.nextUpgrade == null) return;
         CurrentBoat = CurrentBoat.nextUpgrade;
         CurrentBoat.isUnlocked = true;
-        EventManager.Publish(new UpgradeEvent { UpgradeType = "Boat", NewLevel = CurrentRod.level });
+        EventManager.Publish(new UpgradeEvent { UpgradeType = "Boat", NewLevel = CurrentBoat.level });
         RecalculatePassiveIncome();
     }
 
