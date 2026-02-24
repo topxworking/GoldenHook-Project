@@ -8,6 +8,7 @@ public class FishingUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI moneyText;
     [SerializeField] private TextMeshProUGUI statusText;
     [SerializeField] private TextMeshProUGUI passiveIncomeText;
+    [SerializeField] private TextMeshProUGUI equipmentText;
 
     [Header("Buttons")]
     [SerializeField] private Button castButton;
@@ -74,6 +75,7 @@ public class FishingUI : MonoBehaviour
         RefreshAutoButton();
         RefreshUpgradeUI();
         RefreshZonePanel();
+        RefreshEquipmentText();
     }
 
     private void OnEnable()
@@ -133,7 +135,6 @@ public class FishingUI : MonoBehaviour
     private void OnCastPressed()
     {
         _fishing?.OnPlayerTap();
-        castButton.interactable = false;
     }
 
     private void OnReelPressed()
@@ -160,18 +161,21 @@ public class FishingUI : MonoBehaviour
     {
         UpgradeManager.Instance?.TryUpgradeRod();
         RefreshUpgradeUI();
+        RefreshEquipmentText();
     }
 
     private void OnUpgradeBoat()
     {
         UpgradeManager.Instance?.TryUpgradeBoat();
         RefreshUpgradeUI();
+        RefreshEquipmentText();
     }
 
     private void OnHireWorker()
     {
         UpgradeManager.Instance.TryHireWorker();
         RefreshUpgradeUI();
+        RefreshEquipmentText();
     }
 
     private void OnMoneyChanged(MoneyChangedEvent e)
@@ -179,12 +183,14 @@ public class FishingUI : MonoBehaviour
         if (moneyText != null) moneyText.text = $"${e.NewAmount:N0}";
         RefreshUpgradeUI();
         RefreshZonePanel();
+        RefreshEquipmentText();
     }
 
     private void OnUpgradeEvent(UpgradeEvent e)
     {
         RefreshUpgradeUI();
         RefreshAutoButton();
+        RefreshEquipmentText();
     }
 
     private void OnZoneUnlocked(ZoneUnlockedEvent e) => RefreshZonePanel();
@@ -249,6 +255,7 @@ public class FishingUI : MonoBehaviour
                 castButton?.gameObject.SetActive(true);
                 castButton.interactable = !_isAutoMode;
                 reelButton.interactable = false;
+                autoToggleButton.interactable = true;
                 break;
 
             case FishingStateId.Casting:
@@ -266,7 +273,7 @@ public class FishingUI : MonoBehaviour
 
             case FishingStateId.ReelIn:
                 reelButton.interactable = false;
-                autoToggleButton.interactable = true;
+                autoToggleButton.interactable = false;
                 break;
         }
     }
@@ -295,5 +302,16 @@ public class FishingUI : MonoBehaviour
             autoToggleImage.sprite = autoOffSprite;
             autoToggleButton.interactable = true;
         }
+    }
+
+    private void RefreshEquipmentText()
+    {
+        if (equipmentText == null || _upgrade == null) return;
+
+        string rodName = _upgrade.CurrentRod?.rodName ?? "None";
+        int rodLv = _upgrade.CurrentRod?.level ?? 0;
+        string boatName = _upgrade.CurrentBoat?.boatName ?? "None";
+
+        equipmentText.text = $"Rod: {rodName} Lv.{rodLv} | Boat: {boatName}";
     }
 }

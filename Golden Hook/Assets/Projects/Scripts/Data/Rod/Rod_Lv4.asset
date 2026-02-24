@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad3d3c6c713ea5946932a74474275c24, type: 3}
   m_Name: Rod_Lv4
   m_EditorClassIdentifier: Assembly-CSharp::RodData
-  rodName: Titanium Rod
+  rodName: Titanium
   rodSprite: {fileID: 0}
   level: 4
   castingSpeed: 2.2
