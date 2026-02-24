@@ -13,11 +13,11 @@ public class UpgradeManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private FishingController fishingController;
 
-    public RodData CurrentRod { get; private set; }
-    public BoatData CurrentBoat { get; private set; }
+    public RodData CurrentRod       { get; private set; }
+    public BoatData CurrentBoat     { get; private set; }
 
-    public RodData StartingRod { get; private set; }
-    public BoatData StartingBoat { get; private set; }
+    public RodData StartingRod      { get; private set; }
+    public BoatData StartingBoat    { get; private set; }
 
     private readonly List<WorkerData> _hiredWorkers = new();
 
@@ -137,13 +137,13 @@ public class UpgradeManager : MonoBehaviour
         Debug.Log($"[Upgrade] Passive income/s = ${income:F2}");
     }
 
-    public int GetRodUpgradeCost() => CurrentRod?.nextUpgrade?.upgradeCost ?? -1;
+    public int GetRodUpgradeCost()  => CurrentRod?.nextUpgrade?.upgradeCost ?? -1;
     public int GetBoatUpgradeCost() => CurrentBoat?.nextUpgrade?.upgradeCost ?? -1;
-    public int GetWorkerHireCost() => workerPrefabData?.hireCost ?? -1;
-    public bool CanUpgradeRod() => CurrentRod?.nextUpgrade != null;
-    public bool CanUpgradeBoat() => CurrentBoat?.nextUpgrade != null;
-    public bool CanHireWorker() => _hiredWorkers.Count < (CurrentBoat?.workerSlots ?? 1);
-    public int WorkerCount => _hiredWorkers.Count;
-    public int MaxWorkers => CurrentBoat?.workerSlots ?? 1;
+    public int GetWorkerHireCost()  => workerPrefabData?.hireCost ?? -1;
+    public bool CanUpgradeRod()     => CurrentRod?.nextUpgrade != null;
+    public bool CanUpgradeBoat()    => CurrentBoat?.nextUpgrade != null;
+    public bool CanHireWorker()     => _hiredWorkers.Count < (CurrentBoat?.workerSlots ?? 1);
+    public int WorkerCount          => _hiredWorkers.Count;
+    public int MaxWorkers           => CurrentBoat?.workerSlots ?? 1;
 
 }

@@ -198,14 +198,14 @@ public class FishingUI : MonoBehaviour
         int workerCost = _upgrade.GetWorkerHireCost();
         int money = EconomyManager.Instance?.CurrentMoney ?? 0;
 
-        if (rodCostText != null) rodCostText.text = rodCost > 0 ? $"${rodCost}" : "MAX";
-        if (boatCostText != null) boatCostText.text = boatCost > 0 ? $"${boatCost}" : "MAX";
-        if (workerCostText != null) workerCostText.text = workerCost > 0 ? $"${workerCost}" : "N/A";
-        if (workerCountText != null) workerCountText.text = $"Workers: {_upgrade.WorkerCount}/{_upgrade.MaxWorkers}";
+        if (rodCostText != null)        rodCostText.text = rodCost > 0 ? $"${rodCost}" : "MAX";
+        if (boatCostText != null)       boatCostText.text = boatCost > 0 ? $"${boatCost}" : "MAX";
+        if (workerCostText != null)     workerCostText.text = workerCost > 0 ? $"${workerCost}" : "N/A";
+        if (workerCountText != null)    workerCountText.text = $"Workers: {_upgrade.WorkerCount}/{_upgrade.MaxWorkers}";
 
-        if (upgradeRodButton != null) upgradeRodButton.interactable = _upgrade.CanUpgradeRod() && money >= rodCost;
-        if (upgradeBoatButton != null) upgradeBoatButton.interactable = _upgrade.CanUpgradeBoat() && money >= boatCost;
-        if (hireWorkerButton != null) hireWorkerButton.interactable = _upgrade.CanHireWorker() && money >= workerCost;
+        if (upgradeRodButton != null)   upgradeRodButton.interactable = _upgrade.CanUpgradeRod() && money >= rodCost;
+        if (upgradeBoatButton != null)  upgradeBoatButton.interactable = _upgrade.CanUpgradeBoat() && money >= boatCost;
+        if (hireWorkerButton != null)   hireWorkerButton.interactable = _upgrade.CanHireWorker() && money >= workerCost;
     }
 
     private void RefreshZonePanel()
