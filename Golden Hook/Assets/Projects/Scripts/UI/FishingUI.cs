@@ -61,6 +61,15 @@ public class FishingUI : MonoBehaviour
 
         catchPopupPanel?.SetActive(false);
         reelPrompt?.SetActive(false);
+       
+        StartCoroutine(InitAfterManager());
+    }
+
+    private System.Collections.IEnumerator InitAfterManager()
+    {
+        yield return null;
+
+        _upgrade = UpgradeManager.Instance;
 
         RefreshAutoButton();
         RefreshUpgradeUI();
@@ -246,15 +255,18 @@ public class FishingUI : MonoBehaviour
             case FishingStateId.Waiting:
                 castButton.interactable = false;
                 reelButton.interactable = false;
+                autoToggleButton.interactable = false;
                 break;
 
             case FishingStateId.Hooked:
                 reelButton?.gameObject.SetActive(true);
                 reelButton.interactable = !_isAutoMode;
+                autoToggleButton.interactable = false;
                 break;
 
             case FishingStateId.ReelIn:
                 reelButton.interactable = false;
+                autoToggleButton.interactable = true;
                 break;
         }
     }
@@ -271,7 +283,7 @@ public class FishingUI : MonoBehaviour
         if (!IsAutoUnlocked())
         {
             autoToggleImage.sprite = autoLockedSprite;
-            autoToggleButton.interactable = false;
+            autoToggleButton.interactable = true;
         }
         else if (_isAutoMode)
         {
