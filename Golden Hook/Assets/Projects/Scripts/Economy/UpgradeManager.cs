@@ -16,6 +16,9 @@ public class UpgradeManager : MonoBehaviour
     public RodData CurrentRod { get; private set; }
     public BoatData CurrentBoat { get; private set; }
 
+    public RodData StartingRod { get; private set; }
+    public BoatData StartingBoat { get; private set; }
+
     private readonly List<WorkerData> _hiredWorkers = new();
 
     private void Awake()
@@ -26,10 +29,12 @@ public class UpgradeManager : MonoBehaviour
 
     private void Start()
     {
+        StartingRod = startingRod;
+        StartingBoat = startingBoat;
         CurrentRod = startingRod;
         CurrentBoat = startingBoat;
         fishingController?.SetRod(CurrentRod);
-
+        RecalculatePassiveIncome();
     }
 
     // Rod Upgrade
@@ -91,6 +96,33 @@ public class UpgradeManager : MonoBehaviour
         EventManager.Publish(new UpgradeEvent { UpgradeType = "Worker", NewLevel = _hiredWorkers.Count });
         RecalculatePassiveIncome();
         return true;
+    }
+
+    public void UpgradeRodFree()
+    {
+        if (CurrentRod?.nextUpgrade == null) return;
+        CurrentRod = CurrentRod.nextUpgrade;
+        CurrentRod.isUnlocked = true;
+        fishingController?.SetRod(CurrentRod);
+        EventManager.Publish(new UpgradeEvent { UpgradeType = "Rod", NewLevel = CurrentRod.level });
+    }
+
+    public void UpgradeBoatFree()
+    {
+        if (CurrentBoat?.nextUpgrade == null) return;
+        CurrentBoat = CurrentBoat.nextUpgrade;
+        CurrentBoat.isUnlocked = true;
+        EventManager.Publish(new UpgradeEvent { UpgradeType = "Boat", NewLevel = CurrentRod.level });
+        RecalculatePassiveIncome();
+    }
+
+    public void HireWorkerFree()
+    {
+        if (workerPrefabData == null) return;
+        if (_hiredWorkers.Count >= (CurrentBoat?.workerSlots ?? 1)) return;
+        _hiredWorkers.Add(workerPrefabData);
+        EventManager.Publish(new UpgradeEvent { UpgradeType = "Worker", NewLevel = _hiredWorkers.Count });
+        RecalculatePassiveIncome();
     }
 
     // Passive Income Calcutation

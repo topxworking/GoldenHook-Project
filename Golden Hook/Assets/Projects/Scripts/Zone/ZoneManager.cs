@@ -48,7 +48,7 @@ public class ZoneManager : MonoBehaviour
 
         if (zone.requiredZoneIndex >= 0)
         {
-            var prereq = allZones.Find(z => z.ZoneIndex == zone.requiredZoneIndex);
+            var prereq = allZones.Find(z => z.zoneIndex == zone.requiredZoneIndex);
             if (prereq != null && !prereq.isUnlocked) return false;
         }
 

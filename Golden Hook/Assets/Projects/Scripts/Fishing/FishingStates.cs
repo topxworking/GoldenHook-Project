@@ -16,7 +16,11 @@ public class IdleState : IFishingState
 {
     public FishingStateId StateId => FishingStateId.Idle;
 
-    public void Enter(FishingStateMachine sm) => sm.UI?.SetStatus("Ready to fish!");
+    public void Enter(FishingStateMachine sm)
+    {
+        sm.UI?.SetStatus("Ready to fish!");
+        sm.UI?.UpdateFishingButtons(FishingStateId.Idle);
+    }
     public void Exit(FishingStateMachine sm) { }
     public void Update(FishingStateMachine sm) { }
 
@@ -35,6 +39,7 @@ public class CastingState : IFishingState
         _castTime = 0.5f / (sm.CurrentRod?.castingSpeed ?? 1f);
         sm.UI?.SetStatus("Casting...");
         sm.PlayAnimation("Cast");
+        sm.UI?.UpdateFishingButtons(FishingStateId.Casting);
     }
 
     public void Update(FishingStateMachine sm)
@@ -62,6 +67,7 @@ public class WaitingState : IFishingState
         _biteWindow = baseWait * Random.Range(0.6f, 1.0f);
         sm.UI?.SetStatus("Waiting for a bite...");
         sm.PlayAnimation("Wait");
+        sm.UI?.UpdateFishingButtons(FishingStateId.Waiting);
     }
 
     public void Update(FishingStateMachine sm)
@@ -88,13 +94,13 @@ public class HookedState : IFishingState
         sm.UI?.SetStatus("Fish on the hook! REEL IT IN!");
         sm.PlayAnimation("Hooked");
         sm.UI?.ShowReelPrompt(true);
+        sm.UI?.UpdateFishingButtons(FishingStateId.Hooked);
     }
 
     public void Update(FishingStateMachine sm)
     {
         _timer += Time.deltaTime;
 
-        // Auto-strategies reel automatically
         if (sm.ActiveStrategy != null && !sm.ActiveStrategy.RequiresInput)
         {
             sm.TransitionTo(FishingStateId.ReelIn);
@@ -125,6 +131,7 @@ public class ReelInState : IFishingState
         _reelTime = 1.2f / (sm.CurrentRod?.castingSpeed ?? 1f);
         sm.UI?.SetStatus("Reeling in...");
         sm.PlayAnimation("ReelIn");
+        sm.UI?.UpdateFishingButtons(FishingStateId.ReelIn);
     }
 
     public void Update(FishingStateMachine sm)

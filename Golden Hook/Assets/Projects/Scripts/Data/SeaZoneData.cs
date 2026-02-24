@@ -16,7 +16,7 @@ public class SeaZoneData : ScriptableObject
     public string zoneName;
     public Sprite zoneBackground;
     public Color zoneThemeColor = Color.blue;
-    public int ZoneIndex = 0;
+    public int zoneIndex = 0;
 
     [Header("Fish Pool")]
     public List<FishSpawnEntry> fishPool = new();

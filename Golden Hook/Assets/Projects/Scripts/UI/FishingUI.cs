@@ -7,15 +7,19 @@ public class FishingUI : MonoBehaviour
     [Header("HUD")]
     [SerializeField] private TextMeshProUGUI moneyText;
     [SerializeField] private TextMeshProUGUI statusText;
-    [SerializeField] private TextMeshProUGUI strategyLabel;
     [SerializeField] private TextMeshProUGUI passiveIncomeText;
 
     [Header("Buttons")]
     [SerializeField] private Button castButton;
-    [SerializeField] private Button autoTaggleButton;
+    [SerializeField] private Button reelButton;
+    [SerializeField] private Button autoToggleButton;
     [SerializeField] private Button upgradeRodButton;
     [SerializeField] private Button upgradeBoatButton;
     [SerializeField] private Button hireWorkerButton;
+    [SerializeField] private Image autoToggleImage;
+    [SerializeField] private Sprite autoOnSprite;
+    [SerializeField] private Sprite autoOffSprite;
+    [SerializeField] private Sprite autoLockedSprite;
 
     [Header("Catch Popup")]
     [SerializeField] private GameObject catchPopupPanel;
@@ -49,7 +53,8 @@ public class FishingUI : MonoBehaviour
         _upgrade = UpgradeManager.Instance;
 
         castButton?.onClick.AddListener(OnCastPressed);
-        autoTaggleButton?.onClick.AddListener(OnAutoToggle);
+        reelButton?.onClick.AddListener(OnReelPressed);
+        autoToggleButton?.onClick.AddListener(OnAutoToggle);
         upgradeRodButton?.onClick.AddListener(OnUpgradeRod);
         upgradeBoatButton?.onClick.AddListener(OnUpgradeBoat);
         hireWorkerButton?.onClick.AddListener(OnHireWorker);
@@ -57,6 +62,7 @@ public class FishingUI : MonoBehaviour
         catchPopupPanel?.SetActive(false);
         reelPrompt?.SetActive(false);
 
+        RefreshAutoButton();
         RefreshUpgradeUI();
         RefreshZonePanel();
     }
@@ -88,16 +94,13 @@ public class FishingUI : MonoBehaviour
 
         if (passiveIncomeText != null && EconomyManager.Instance != null)
             passiveIncomeText.text = $"+${EconomyManager.Instance.CurrentMoney}/s passive";
+
+        RefreshUpgradeUI();
     }
 
     public void SetStatus(string msg)
     {
         if (statusText != null) statusText.text = msg;
-    }
-
-    public void UpgradeStrategyLabel(string name)
-    {
-        if (strategyLabel != null) strategyLabel.text = $"Mode: {name}";
     }
 
     public void ShowReelPrompt(bool show) => reelPrompt?.SetActive(show);
@@ -120,15 +123,30 @@ public class FishingUI : MonoBehaviour
         _popupTimer = 2.5f;
     }
 
-    private void OnCastPressed() => _fishing?.OnPlayerTap();
+    private void OnCastPressed()
+    {
+        _fishing?.OnPlayerTap();
+        castButton.interactable = false;
+    }
+
+    private void OnReelPressed()
+    {
+        _fishing?.OnPlayerTap();
+    }
+
     private void OnAutoToggle()
     {
+        if (!IsAutoUnlocked())
+        {
+            SetStatus("Upgrade Rod to Level 2 to unlock Auto Fishing!");
+            return;
+        }
+
         _isAutoMode = !_isAutoMode;
         _fishing?.ToggleAutoFishing(_isAutoMode);
-        if (autoTaggleButton != null)
-            autoTaggleButton.GetComponentInChildren<TextMeshProUGUI>().text =
-                _isAutoMode ? "Auto: ON" : "Auto : OFF";
-        castButton?.gameObject.SetActive(!_isAutoMode);
+        castButton.interactable = !_isAutoMode;
+        RefreshAutoButton();
+        RefreshUpgradeUI();
     }
 
     private void OnUpgradeRod()
@@ -156,7 +174,12 @@ public class FishingUI : MonoBehaviour
         RefreshZonePanel();
     }
 
-    private void OnUpgradeEvent(UpgradeEvent e) => RefreshUpgradeUI();
+    private void OnUpgradeEvent(UpgradeEvent e)
+    {
+        RefreshUpgradeUI();
+        RefreshAutoButton();
+    }
+
     private void OnZoneUnlocked(ZoneUnlockedEvent e) => RefreshZonePanel();
 
     private void RefreshUpgradeUI()
@@ -208,6 +231,59 @@ public class FishingUI : MonoBehaviour
 
             btn.interactable = zone.isUnlocked ||
                 (EconomyManager.Instance?.CurrentMoney ?? 0) >= zone.unlockCost;
+        }
+    }
+
+    public void UpdateFishingButtons(FishingStateId state)
+    {
+        switch (state)
+        {
+            case FishingStateId.Idle:
+                castButton?.gameObject.SetActive(true);
+                castButton.interactable = !_isAutoMode;
+                reelButton.interactable = false;
+                break;
+
+            case FishingStateId.Casting:
+            case FishingStateId.Waiting:
+                castButton.interactable = false;
+                reelButton.interactable = false;
+                break;
+
+            case FishingStateId.Hooked:
+                reelButton?.gameObject.SetActive(true);
+                reelButton.interactable = !_isAutoMode;
+                break;
+
+            case FishingStateId.ReelIn:
+                reelButton.interactable = false;
+                break;
+        }
+    }
+
+    public bool IsAutoUnlocked()
+    {
+        return UpgradeManager.Instance?.CurrentRod?.level >= 2;
+    }
+
+    private void RefreshAutoButton()
+    {
+        if (autoToggleButton == null) return;
+
+        if (!IsAutoUnlocked())
+        {
+            autoToggleImage.sprite = autoLockedSprite;
+            autoToggleButton.interactable = false;
+        }
+        else if (_isAutoMode)
+        {
+            autoToggleImage.sprite = autoOnSprite;
+            autoToggleButton.interactable = true;
+        }
+        else
+        {
+            autoToggleImage.sprite = autoOffSprite;
+            autoToggleButton.interactable = true;
         }
     }
 }

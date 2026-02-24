@@ -89,7 +89,6 @@ public class FishingController : MonoBehaviour
         ActiveStrategy?.OnDeactivate(this);
         ActiveStrategy = strategy;
         ActiveStrategy.OnActivate(this);
-        fishingUI?.UpgradeStrategyLabel(strategy.StrategyName);
     }
 
     public void ToggleAutoFishing(bool enable)
