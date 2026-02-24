@@ -15,7 +15,7 @@ MonoBehaviour:
   zoneName: Coastal Waters
   zoneBackground: {fileID: 0}
   zoneThemeColor: {r: 0.101960786, g: 0.32156864, b: 0.4627451, a: 1}
-  ZoneIndex: 0
+  zoneIndex: 0
   fishPool:
   - fishData: {fileID: 11400000, guid: 0675e44f374699b42a208a3692477d9e, type: 2}
     spawnWeightOveride: 0
@@ -25,6 +25,6 @@ MonoBehaviour:
     spawnWeightOveride: 0
   isUnlocked: 1
   unlockCost: 0
-  reqiredZoneIndex: -1
+  requiredZoneIndex: -1
   rareFishBonus: 0
-  incomeMultipier: 1
+  incomeMultiplier: 1

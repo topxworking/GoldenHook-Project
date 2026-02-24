@@ -58,6 +58,7 @@ public class FishingController : MonoBehaviour
     public RodData CurrentRod {  get; private set; }
     public IFishingStrategy ActiveStrategy { get; private set; }
     public FishingUI FisingUI => fishingUI;
+    public FishingStateId CurrentStateId => _stateMachine?.CurrentStateId ?? FishingStateId.Idle;
 
     private FishingStateMachine _stateMachine;
     private SeaZoneData _currentZone;

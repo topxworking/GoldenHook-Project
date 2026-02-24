@@ -1,6 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class FishingUI : MonoBehaviour
 {
@@ -38,9 +40,19 @@ public class FishingUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI workerCostText;
     [SerializeField] private TextMeshProUGUI workerCountText;
 
-    [Header("Zone Panel")]
-    [SerializeField] private Transform zonePanelContent;
-    [SerializeField] private GameObject zoneBottonPrefabs;
+    [Header("Zone Buttons")]
+    [SerializeField] private List<ZoneButtonEntry> zoneButtons = new();
+
+    [System.Serializable]
+    public class ZoneButtonEntry
+    {
+        public Button button;
+        public Image buttonImage;
+        public TextMeshProUGUI nameText;
+        public TextMeshProUGUI costText;
+        public TextMeshProUGUI activeLabel;
+        public SeaZoneData zoneData;
+    }
 
     private bool _isAutoMode = false;
     private float _popupTimer = 0f;
@@ -60,21 +72,28 @@ public class FishingUI : MonoBehaviour
         upgradeBoatButton?.onClick.AddListener(OnUpgradeBoat);
         hireWorkerButton?.onClick.AddListener(OnHireWorker);
 
+        foreach (var entry in zoneButtons)
+        {
+            var captured = entry;
+            captured.button?.onClick.AddListener(() => OnZoneButtonPressed(captured));
+        }
+
         catchPopupPanel?.SetActive(false);
         reelPrompt?.SetActive(false);
-       
+
         StartCoroutine(InitAfterManager());
     }
 
     private System.Collections.IEnumerator InitAfterManager()
     {
         yield return null;
+        yield return null;
 
         _upgrade = UpgradeManager.Instance;
 
         RefreshAutoButton();
         RefreshUpgradeUI();
-        RefreshZonePanel();
+        RefreshZoneButtons();
         RefreshEquipmentText();
     }
 
@@ -104,7 +123,7 @@ public class FishingUI : MonoBehaviour
         }
 
         if (passiveIncomeText != null && EconomyManager.Instance != null)
-            passiveIncomeText.text = $"+${EconomyManager.Instance.PassiveIncome:F2}/s passive";
+            passiveIncomeText.text = $"+${EconomyManager.Instance.PassiveIncome:F2}/s passive income";
     }
 
     public void SetStatus(string msg)
@@ -182,7 +201,6 @@ public class FishingUI : MonoBehaviour
     {
         if (moneyText != null) moneyText.text = $"${e.NewAmount:N0}";
         RefreshUpgradeUI();
-        RefreshZonePanel();
         RefreshEquipmentText();
     }
 
@@ -192,8 +210,6 @@ public class FishingUI : MonoBehaviour
         RefreshAutoButton();
         RefreshEquipmentText();
     }
-
-    private void OnZoneUnlocked(ZoneUnlockedEvent e) => RefreshZonePanel();
 
     private void RefreshUpgradeUI()
     {
@@ -212,38 +228,107 @@ public class FishingUI : MonoBehaviour
         if (upgradeRodButton != null)   upgradeRodButton.interactable = _upgrade.CanUpgradeRod() && money >= rodCost;
         if (upgradeBoatButton != null)  upgradeBoatButton.interactable = _upgrade.CanUpgradeBoat() && money >= boatCost;
         if (hireWorkerButton != null)   hireWorkerButton.interactable = _upgrade.CanHireWorker() && money >= workerCost;
+
+        bool isIdle = _fishing == null ||
+            _fishing.CurrentStateId == FishingStateId.Idle;
+
+        if (upgradeRodButton != null)
+            upgradeRodButton.interactable = isIdle && _upgrade.CanUpgradeRod() && money >= rodCost;
+        if (upgradeBoatButton != null)
+            upgradeBoatButton.interactable = isIdle && _upgrade.CanUpgradeBoat() && money >= boatCost;
+        if (hireWorkerButton != null)
+            hireWorkerButton.interactable = isIdle && _upgrade.CanHireWorker() && money >= workerCost;
     }
 
-    private void RefreshZonePanel()
+    private void OnZoneUnlocked(ZoneUnlockedEvent e) => RefreshZoneButtons();
+
+    private void OnZoneButtonPressed(ZoneButtonEntry entry)
     {
-        if (zonePanelContent == null || zoneBottonPrefabs == null) return;
+        if (entry.zoneData == null) return;
+        var zone = entry.zoneData;
 
-        foreach (Transform child in zonePanelContent)
-            Destroy(child.gameObject);
+        Debug.Log($"[ZoneBtn] {zone.zoneName} | zoneIndex={zone.zoneIndex} | unlockCost={zone.unlockCost} | money={EconomyManager.Instance?.CurrentMoney} | isUnlocked={ZoneManager.Instance.IsZoneUnlocked(zone)}");
 
-        foreach (var zone in ZoneManager.Instance.GetAllZones())
+        bool isUnlocked = ZoneManager.Instance.IsZoneUnlocked(zone);
+        bool canAfford = (EconomyManager.Instance?.CurrentMoney ?? 0) >= zone.unlockCost;
+
+        if (!isUnlocked && !canAfford)
         {
-            var go = Instantiate(zoneBottonPrefabs, zonePanelContent);
-            var btn = go.GetComponent<Button>();
-            var txt = go.GetComponentInChildren<TextMeshProUGUI>();
+            SetStatus($"Need ${zone.unlockCost - (EconomyManager.Instance?.CurrentMoney ?? 0):N0} more to unlock {zone.zoneName}");
+            return;
+        }
 
-            string label = zone.isUnlocked
-                ? zone.zoneName
-                : $"{zone.zoneName} (${zone.unlockCost})";
+        if (isUnlocked)
+        {
+            ZoneManager.Instance.SwitchToZone(zone);
+            RefreshZoneButtons();
+            return;
+        }
 
-            if (txt != null) txt.text = label ;
+        if (zone.requiredZoneIndex >= 0 && !ZoneManager.Instance.IsZoneUnlocked(zone.requiredZoneIndex))
+        {
+            var prereq = ZoneManager.Instance.GetAllZones()
+                .Find(z => z.zoneIndex == zone.requiredZoneIndex);
+            SetStatus($"Unlock {prereq?.zoneName ?? "previous zone"} first!");
+            return;
+        }
 
-            var capturedZone = zone;
-            btn?.onClick.AddListener(() =>
+        int money = EconomyManager.Instance?.CurrentMoney ?? 0;
+        if (money < zone.unlockCost)
+        {
+            SetStatus($"Need ${zone.unlockCost - money:N0} more to unlock {zone.zoneName}");
+            return;
+        }
+
+        bool success = ZoneManager.Instance.TryUnlockZone(zone);
+        if (success)
+        {
+            SetStatus($"{zone.zoneName} Unlocked!");
+            RefreshZoneButtons();
+        }
+        else
+        {
+            SetStatus($"Need ${zone.unlockCost - (EconomyManager.Instance?.CurrentMoney ?? 0):N0} more to unlock {zone.zoneName}");
+        }
+    }
+
+    public void RefreshZoneButtons()
+    {
+        if (ZoneManager.Instance == null) return;
+
+        foreach (var entry in zoneButtons)
+        {
+            if (entry.zoneData == null || entry.button == null) continue;
+
+            var zone = entry.zoneData;
+            bool isUnlocked = ZoneManager.Instance.IsZoneUnlocked(zone);
+            bool isCurrentZone = ZoneManager.Instance.CurrentZone == zone;
+            bool canAfford = (EconomyManager.Instance?.CurrentMoney ?? 0) >= zone.unlockCost;
+
+            if (entry.nameText != null)
             {
-                if (capturedZone.isUnlocked)
-                    ZoneManager.Instance.SwitchToZone(capturedZone);
-                else
-                    ZoneManager.Instance.TryUnlockZone(capturedZone);
-            });
+                entry.nameText.text = isUnlocked ? zone.zoneName : $"{zone.zoneName}";
+                entry.nameText.color = isUnlocked ? Color.white : new Color(0.6f, 0.6f, 0.6f);
+            }
 
-            btn.interactable = zone.isUnlocked ||
-                (EconomyManager.Instance?.CurrentMoney ?? 0) >= zone.unlockCost;
+            if (entry.costText != null)
+            {
+                entry.costText.text = isCurrentZone ? "" : isUnlocked
+                    ? $"x{zone.incomeMultiplier} income"
+                    : $"${zone.unlockCost:N0}";
+
+                entry.costText.color = canAfford && !isUnlocked
+                    ? new Color(1f, 0.85f, 0.3f)
+                    : new Color(0.7f, 0.7f, 0.7f);
+            }
+
+            if (entry.activeLabel != null)
+            {
+                entry.activeLabel.gameObject.SetActive(isCurrentZone);
+                entry.activeLabel.text = "Active";
+            }
+
+            entry.button.interactable = isUnlocked || canAfford;
         }
     }
 
@@ -255,25 +340,40 @@ public class FishingUI : MonoBehaviour
                 castButton?.gameObject.SetActive(true);
                 castButton.interactable = !_isAutoMode;
                 reelButton.interactable = false;
-                autoToggleButton.interactable = true;
+                upgradeRodButton.interactable = true;
+                upgradeBoatButton.interactable = true;
+                hireWorkerButton.interactable = true;
                 break;
 
             case FishingStateId.Casting:
+                castButton.interactable = false;
+                reelButton.interactable = false;
+                upgradeRodButton.interactable = false;
+                upgradeBoatButton.interactable = false;
+                hireWorkerButton.interactable = false;
+                break;
+
             case FishingStateId.Waiting:
                 castButton.interactable = false;
                 reelButton.interactable = false;
-                autoToggleButton.interactable = false;
+                upgradeRodButton.interactable = false;
+                upgradeBoatButton.interactable = false;
+                hireWorkerButton.interactable = false;
                 break;
 
             case FishingStateId.Hooked:
                 reelButton?.gameObject.SetActive(true);
                 reelButton.interactable = !_isAutoMode;
-                autoToggleButton.interactable = false;
+                upgradeRodButton.interactable = false;
+                upgradeBoatButton.interactable = false;
+                hireWorkerButton.interactable = false;
                 break;
 
             case FishingStateId.ReelIn:
                 reelButton.interactable = false;
-                autoToggleButton.interactable = false;
+                upgradeRodButton.interactable = false;
+                upgradeBoatButton.interactable = false;
+                hireWorkerButton.interactable = false;
                 break;
         }
     }

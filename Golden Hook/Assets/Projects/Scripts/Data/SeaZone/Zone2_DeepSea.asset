@@ -15,7 +15,7 @@ MonoBehaviour:
   zoneName: Deep Sea
   zoneBackground: {fileID: 0}
   zoneThemeColor: {r: 0.050980393, g: 0.16862746, b: 0.27058825, a: 1}
-  zoneIndex: 0
+  zoneIndex: 1
   fishPool:
   - fishData: {fileID: 11400000, guid: 0675e44f374699b42a208a3692477d9e, type: 2}
     spawnWeightOveride: 0
@@ -31,4 +31,4 @@ MonoBehaviour:
   unlockCost: 5000
   requiredZoneIndex: 0
   rareFishBonus: 0.05
-  incomeMultipier: 1.8
+  incomeMultiplier: 1

@@ -15,7 +15,7 @@ MonoBehaviour:
   zoneName: Midnight Ocean
   zoneBackground: {fileID: 0}
   zoneThemeColor: {r: 0.039215688, g: 0.039215688, b: 0.18039216, a: 1}
-  zoneIndex: 0
+  zoneIndex: 2
   fishPool:
   - fishData: {fileID: 11400000, guid: debfd0205cb1e0c46a4a16be1daab2d8, type: 2}
     spawnWeightOveride: 0
@@ -35,4 +35,4 @@ MonoBehaviour:
   unlockCost: 50000
   requiredZoneIndex: 1
   rareFishBonus: 0.1
-  incomeMultipier: 3.5
+  incomeMultiplier: 1

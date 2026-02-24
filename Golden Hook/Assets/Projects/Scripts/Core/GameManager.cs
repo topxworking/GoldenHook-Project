@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -36,6 +37,7 @@ public class GameManager : MonoBehaviour
     private System.Collections.IEnumerator LoadGameDelayed()
     {
         yield return null;
+        yield return null;
         LoadGame();
     }
 
@@ -56,42 +58,46 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt(KEY_BOAT_INDEX, GetBoatIndex());
         PlayerPrefs.SetInt(KEY_WORKER_COUNT, upgradeManager?.WorkerCount ?? 0);
 
-        if (zoneManager != null)
-        {
-            foreach (var zone in zoneManager.GetAllZones())
-                PlayerPrefs.SetInt(KEY_ZONE_PREFIX + zone.zoneIndex, zone.isUnlocked ? 1 : 0);
-        }
+        var unlocked = zoneManager?.GetUnlockedIndexes() ?? new List<int>();
+        PlayerPrefs.SetString("save_zone", string.Join(",", unlocked));
 
         PlayerPrefs.Save();
     }
 
     public void LoadGame()
     {
-        if (!PlayerPrefs.HasKey(KEY_MONEY)) return;
+        Debug.Log($"[Load] HasKey={PlayerPrefs.HasKey(KEY_MONEY)} | EconomyReady={EconomyManager.Instance != null}");
+
+        if (!PlayerPrefs.HasKey(KEY_MONEY))
+        {
+            Debug.Log("[Load] No save found — starting fresh");
+            return;
+        }
 
         int savedMoney = PlayerPrefs.GetInt(KEY_MONEY, 0);
-        EconomyManager.Instance?.SetMoney(savedMoney);
+        EconomyManager.Instance?.AddMoney(savedMoney);
+        Debug.Log($"[Load] money={savedMoney}");
 
         int rodIndex = PlayerPrefs.GetInt(KEY_ROD_INDEX, 0);
         ApplyRodIndex(rodIndex);
+        Debug.Log($"[Load] rodIndex={rodIndex}");
 
         int boatIndex = PlayerPrefs.GetInt(KEY_BOAT_INDEX, 0);
         ApplyBoatIndex(boatIndex);
+        Debug.Log($"[Load] boatIndex={boatIndex}");
 
-        if (zoneManager != null)
-        {
-            foreach (var zone in zoneManager.GetAllZones())
-            {
-                int unlocked = PlayerPrefs.GetInt(KEY_ZONE_PREFIX + zone.zoneIndex, zone.zoneIndex == 0 ? 1 : 0);
-                    zone.isUnlocked = unlocked == 1;
-            }
-        }
+        string zonesStr = PlayerPrefs.GetString("save_zones", "0");
+        var indexes = new List<int>();
+        foreach (var s in zonesStr.Split(','))
+            if (int.TryParse(s.Trim(), out int idx))
+                indexes.Add(idx);
+        zoneManager?.LoadUnlockedZones(indexes);
+        Debug.Log($"[Load] zones={zonesStr}");
 
         int workerCount = PlayerPrefs.GetInt(KEY_WORKER_COUNT, 0);
         for (int i = 0; i < workerCount; i++)
             upgradeManager?.HireWorkerFree();
-
-        Debug.Log($"[Load] money={savedMoney} | rod={rodIndex} | boat={boatIndex} | workers={workerCount}");
+        Debug.Log($"[Load] workers={workerCount}");
     }
 
     private int GetRodIndex()

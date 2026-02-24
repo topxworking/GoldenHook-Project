@@ -15,7 +15,7 @@ MonoBehaviour:
   zoneName: The Abyss
   zoneBackground: {fileID: 0}
   zoneThemeColor: {r: 0.019607844, g: 0.019607844, b: 0.0627451, a: 1}
-  zoneIndex: 0
+  zoneIndex: 3
   fishPool:
   - fishData: {fileID: 11400000, guid: a6e295575ec9ee349a5110d388422de7, type: 2}
     spawnWeightOveride: 0
@@ -31,4 +31,4 @@ MonoBehaviour:
   unlockCost: 500000
   requiredZoneIndex: 2
   rareFishBonus: 0.2
-  incomeMultipier: 8
+  incomeMultiplier: 1

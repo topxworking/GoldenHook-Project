@@ -28,5 +28,5 @@ public class SeaZoneData : ScriptableObject
 
     [Header("Zone Modifiers")]
     public float rareFishBonus = 0f;
-    public float incomeMultipier = 1f;
+    public float incomeMultiplier = 1f;
 }
