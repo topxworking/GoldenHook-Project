@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     private const string KEY_ROD_INDEX  = "save_rod_index";
     private const string KEY_BOAT_INDEX = "save_boat_index";
     private const string KEY_WORKER_COUNT    = "save_worker_count";
-    private const string KEY_ZONE_PREFIX = "save_zone";
 
     private void Awake()
     {

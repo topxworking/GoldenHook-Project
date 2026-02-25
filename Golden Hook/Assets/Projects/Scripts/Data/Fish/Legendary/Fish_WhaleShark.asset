@@ -15,8 +15,8 @@ MonoBehaviour:
   fishName: Whale Shark
   fishSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   rarity: 3
-  minWeight: 10
-  maxWeight: 50
-  basePrice: 2000
-  catchDifficuty: 1
+  minWeight: 50
+  maxWeight: 150
+  basePrice: 5000
+  catchDifficuty: 5
   catchChanceModifier: 1

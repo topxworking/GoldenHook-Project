@@ -17,7 +17,7 @@ MonoBehaviour:
   level: 1
   fishingSpeed: 1
   incomeBonus: 0.1
-  hireCost: 200
+  hireCost: 300
   upgradeCost: 300
   nextUpgrade: {fileID: 11400000, guid: f2207fbdcdc67774394a9ff774a646af, type: 2}
   isUnlocked: 0
