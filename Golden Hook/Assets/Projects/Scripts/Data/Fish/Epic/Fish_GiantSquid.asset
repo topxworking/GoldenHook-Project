@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 32aa04e1a914d3c49bf33e707f510e1c, type: 3}
-  m_Name: Fish_Shark
+  m_Name: Fish_GiantSquid
   m_EditorClassIdentifier: Assembly-CSharp::FishData
-  fishName: Shark
+  fishName: Giant Squid
   fishSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   rarity: 2
-  minWeight: 5
+  minWeight: 6
   maxWeight: 20
-  basePrice: 300
-  catchDifficuty: 1
+  basePrice: 350
+  catchDifficuty: 3.8
   catchChanceModifier: 1

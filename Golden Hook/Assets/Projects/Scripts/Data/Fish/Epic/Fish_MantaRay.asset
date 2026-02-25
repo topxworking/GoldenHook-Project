@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 32aa04e1a914d3c49bf33e707f510e1c, type: 3}
-  m_Name: Fish_Salmon
+  m_Name: Fish_MantaRay
   m_EditorClassIdentifier: Assembly-CSharp::FishData
-  fishName: Salmon
+  fishName: Manta Ray
   fishSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  rarity: 1
-  minWeight: 1
-  maxWeight: 5
-  basePrice: 60
-  catchDifficuty: 2.5
+  rarity: 2
+  minWeight: 8
+  maxWeight: 30
+  basePrice: 320
+  catchDifficuty: 4
   catchChanceModifier: 1

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,7 +37,10 @@ public class FishingUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI crewCostText;
     [SerializeField] private TextMeshProUGUI crewCountText;
 
-    [Header("Zone Buttons")]
+    [Header("Zone Panel")]
+    [SerializeField] private RectTransform zonePanelRect;
+    [SerializeField] private Button zoneMunuButton;
+    [SerializeField] private float slideDuration = 0.3f;
     [SerializeField] private List<ZoneButtonEntry> zoneButtons = new();
 
     [Header("Debug")]
@@ -61,6 +65,11 @@ public class FishingUI : MonoBehaviour
     private bool _isAutoMode = false;
     private float _popupTimer = 0f;
     private bool _isFishing = false;
+    private bool _isZonePanelOpen = false;
+    private Coroutine _slideCoroutine;
+
+    private float _panelHiddenX;
+    private float _panelShownX;
 
     private FishingController _fishing;
     private UpgradeManager _upgrade;
@@ -76,12 +85,12 @@ public class FishingUI : MonoBehaviour
         upgradeRodButton?.onClick.AddListener(OnUpgradeRod);
         upgradeBoatButton?.onClick.AddListener(OnUpgradeBoat);
         hireCrewButton?.onClick.AddListener(OnHireWorker);
+        zoneMunuButton?.onClick.AddListener(OnZoneMenuToggle);
 
         debugMenuButton?.onClick.AddListener(OnDebugMenuToggle);
         debugAddMoneyButton?.onClick.AddListener(OnDebugAddMoneyPressed);
         debugConfirmButton?.onClick.AddListener(OnDebugConfirm);
         debugCancelButton?.onClick.AddListener(OnDebugCancel);
-
         debugInputField?.onSubmit.AddListener(_ => OnDebugConfirm());
 
         debugPanel?.SetActive(false);
@@ -91,6 +100,15 @@ public class FishingUI : MonoBehaviour
         {
             var captured = entry;
             captured.button?.onClick.AddListener(() => OnZoneButtonPressed(captured));
+        }
+
+        if (zonePanelRect != null)
+        {
+            float panelWidth = zonePanelRect.rect.width;
+            _panelShownX = zonePanelRect.anchoredPosition.x;
+            _panelHiddenX = _panelHiddenX - panelWidth;
+
+            zonePanelRect.anchoredPosition = new Vector2(_panelHiddenX, zonePanelRect.anchoredPosition.y);
         }
 
         catchPopupPanel?.SetActive(false);
@@ -288,6 +306,10 @@ public class FishingUI : MonoBehaviour
         {
             ZoneManager.Instance.SwitchToZone(zone);
             RefreshZoneButtons();
+
+            if (_slideCoroutine != null) StopCoroutine(_slideCoroutine);
+            _isZonePanelOpen = false;
+            _slideCoroutine = StartCoroutine(SlidePanel(_panelHiddenX));
             return;
         }               
 
@@ -476,5 +498,35 @@ public class FishingUI : MonoBehaviour
     {
         debugInputPanel?.SetActive(false);
         debugInputField?.SetTextWithoutNotify("");
+    }
+
+    private void OnZoneMenuToggle()
+    {
+        _isZonePanelOpen = !_isZonePanelOpen;
+
+        if (_slideCoroutine != null)
+            StopCoroutine(_slideCoroutine);
+
+        _slideCoroutine = StartCoroutine(
+            SlidePanel(_isZonePanelOpen ? _panelShownX : _panelHiddenX)
+        );
+    }
+
+    private IEnumerator SlidePanel(float targetX)
+    {
+        float startX = zonePanelRect.anchoredPosition.x;
+        float elapsed = 0f;
+
+        while (elapsed < slideDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / slideDuration);
+            float x = Mathf.Lerp(startX, targetX, t);
+            zonePanelRect.anchoredPosition = new Vector2(x, zonePanelRect.anchoredPosition.y);
+            yield return null;
+        }
+
+        zonePanelRect.anchoredPosition = new Vector2(targetX, zonePanelRect.anchoredPosition.y);
+        _slideCoroutine = null;
     }
 }

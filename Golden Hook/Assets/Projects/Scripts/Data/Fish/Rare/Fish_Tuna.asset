@@ -15,8 +15,8 @@ MonoBehaviour:
   fishName: Tuna
   fishSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   rarity: 1
-  minWeight: 2
-  maxWeight: 8
-  basePrice: 80
-  catchDifficuty: 1
+  minWeight: 1
+  maxWeight: 4
+  basePrice: 55
+  catchDifficuty: 2.2
   catchChanceModifier: 1

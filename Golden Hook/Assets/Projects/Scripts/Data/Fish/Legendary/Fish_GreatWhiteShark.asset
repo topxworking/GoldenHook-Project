@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 32aa04e1a914d3c49bf33e707f510e1c, type: 3}
-  m_Name: Fish_Swordfish
+  m_Name: Fish_GreatWhiteShark
   m_EditorClassIdentifier: Assembly-CSharp::FishData
-  fishName: Swordfish
+  fishName: Whale Shark
   fishSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  rarity: 2
-  minWeight: 3
-  maxWeight: 15
-  basePrice: 400
+  rarity: 3
+  minWeight: 10
+  maxWeight: 50
+  basePrice: 2000
   catchDifficuty: 1
   catchChanceModifier: 1

@@ -66,37 +66,29 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetString("save_zone", string.Join(",", indexes));
 
         PlayerPrefs.Save();
-        Debug.Log($"[Save] money={EconomyManager.Instance?.CurrentMoney} | zones={string.Join(",", indexes)}");
     }
 
     public void LoadGame()
     {
-        Debug.Log($"[Load] HasKey={PlayerPrefs.HasKey(KEY_MONEY)} | EconomyReady={EconomyManager.Instance != null}");
-
         if (!PlayerPrefs.HasKey(KEY_MONEY))
         {
-            Debug.Log("[Load] No save found — starting fresh");
             return;
         }
 
         int savedMoney = PlayerPrefs.GetInt(KEY_MONEY, 0);
         EconomyManager.Instance?.AddMoney(savedMoney);
-        Debug.Log($"[Load] money={savedMoney}");
 
         int rodIndex = PlayerPrefs.GetInt(KEY_ROD_INDEX, 0);
         ApplyRodIndex(rodIndex);
-        Debug.Log($"[Load] rodIndex={rodIndex}");
 
         int boatIndex = PlayerPrefs.GetInt(KEY_BOAT_INDEX, 0);
         ApplyBoatIndex(boatIndex);
-        Debug.Log($"[Load] boatIndex={boatIndex}");
 
         string zonesStr = PlayerPrefs.GetString("save_zones", "");
         var indexes = new List<int>();
         foreach (var zone in zoneManager.GetAllZones())
             if (zone.isUnlocked)
                 indexes.Add(zone.zoneIndex);
-        Debug.Log($"[Load] zones={zonesStr}");
 
         if (!string.IsNullOrEmpty(zonesStr))
         {
@@ -110,7 +102,6 @@ public class GameManager : MonoBehaviour
         int workerCount = PlayerPrefs.GetInt(KEY_WORKER_COUNT, 0);
         for (int i = 0; i < workerCount; i++)
             upgradeManager?.HireWorkerFree();
-        Debug.Log($"[Load] workers={workerCount}");
     }
 
     private int GetRodIndex()
