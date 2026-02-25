@@ -39,6 +39,7 @@ public class FishingUI : MonoBehaviour
 
     [Header("Zone Panel")]
     [SerializeField] private RectTransform zonePanelRect;
+    [SerializeField] private RectTransform debugPanelRect;
     [SerializeField] private Button zoneMunuButton;
     [SerializeField] private float slideDuration = 0.3f;
     [SerializeField] private List<ZoneButtonEntry> zoneButtons = new();
@@ -66,10 +67,14 @@ public class FishingUI : MonoBehaviour
     private float _popupTimer = 0f;
     private bool _isFishing = false;
     private bool _isZonePanelOpen = false;
-    private Coroutine _slideCoroutine;
+    private bool _isDebugPanelOpen = false;
+    private Coroutine _zoneSlideCoroutine;
+    private Coroutine _debugSlideCoroutine;
 
-    private float _panelHiddenX;
-    private float _panelShownX;
+    private float _zoneHiddenX;
+    private float _zoneShownX;
+    private float _debugHiddenX;
+    private float _debugShownX;
 
     private FishingController _fishing;
     private UpgradeManager _upgrade;
@@ -93,7 +98,6 @@ public class FishingUI : MonoBehaviour
         debugCancelButton?.onClick.AddListener(OnDebugCancel);
         debugInputField?.onSubmit.AddListener(_ => OnDebugConfirm());
 
-        debugPanel?.SetActive(false);
         debugInputPanel?.SetActive(false);
 
         foreach (var entry in zoneButtons)
@@ -105,10 +109,19 @@ public class FishingUI : MonoBehaviour
         if (zonePanelRect != null)
         {
             float panelWidth = zonePanelRect.rect.width;
-            _panelShownX = zonePanelRect.anchoredPosition.x;
-            _panelHiddenX = _panelHiddenX - panelWidth;
+            _zoneShownX = zonePanelRect.anchoredPosition.x;
+            _zoneHiddenX = _zoneHiddenX - panelWidth;
 
-            zonePanelRect.anchoredPosition = new Vector2(_panelHiddenX, zonePanelRect.anchoredPosition.y);
+            zonePanelRect.anchoredPosition = new Vector2(_zoneHiddenX, zonePanelRect.anchoredPosition.y);
+        }
+
+        if (debugPanelRect != null)
+        {
+            float panelWidth = debugPanelRect.rect.width;
+            _debugShownX = debugPanelRect.anchoredPosition.x;
+            _debugHiddenX = _debugHiddenX + panelWidth;
+
+            debugPanelRect.anchoredPosition = new Vector2(_debugHiddenX, debugPanelRect.anchoredPosition.y);
         }
 
         catchPopupPanel?.SetActive(false);
@@ -305,9 +318,9 @@ public class FishingUI : MonoBehaviour
             ZoneManager.Instance.SwitchToZone(zone);
             RefreshZoneButtons();
 
-            if (_slideCoroutine != null) StopCoroutine(_slideCoroutine);
+            if (_zoneSlideCoroutine != null) StopCoroutine(_zoneSlideCoroutine);
             _isZonePanelOpen = false;
-            _slideCoroutine = StartCoroutine(SlidePanel(_panelHiddenX));
+            _zoneSlideCoroutine = StartCoroutine(SlidePanel(zonePanelRect, _zoneHiddenX));
             return;
         }               
 
@@ -455,9 +468,11 @@ public class FishingUI : MonoBehaviour
 
     private void OnDebugMenuToggle()
     {
-        if (debugPanel == null) return;
-        debugPanel.SetActive(!debugPanel.activeSelf);
-        debugInputPanel?.SetActive(false);
+        _isDebugPanelOpen = !_isDebugPanelOpen;
+        if (_debugSlideCoroutine != null) StopCoroutine(_debugSlideCoroutine);
+
+        float target = _isDebugPanelOpen ? _debugShownX : _debugHiddenX;
+        _debugSlideCoroutine = StartCoroutine(SlidePanel(debugPanelRect, target));
     }
 
     private void OnDebugAddMoneyPressed()
@@ -496,18 +511,17 @@ public class FishingUI : MonoBehaviour
     private void OnZoneMenuToggle()
     {
         _isZonePanelOpen = !_isZonePanelOpen;
+        if (_zoneSlideCoroutine != null) StopCoroutine(_zoneSlideCoroutine);
 
-        if (_slideCoroutine != null)
-            StopCoroutine(_slideCoroutine);
-
-        _slideCoroutine = StartCoroutine(
-            SlidePanel(_isZonePanelOpen ? _panelShownX : _panelHiddenX)
-        );
+        float target = _isZonePanelOpen ? _zoneShownX : _zoneHiddenX;
+        _zoneSlideCoroutine = StartCoroutine(SlidePanel(zonePanelRect, target));
     }
 
-    private IEnumerator SlidePanel(float targetX)
+    private IEnumerator SlidePanel(RectTransform panelRect, float targetX)
     {
-        float startX = zonePanelRect.anchoredPosition.x;
+        if (panelRect == null) yield break;
+
+        float startX = panelRect.anchoredPosition.x;
         float elapsed = 0f;
 
         while (elapsed < slideDuration)
@@ -515,11 +529,10 @@ public class FishingUI : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = Mathf.SmoothStep(0f, 1f, elapsed / slideDuration);
             float x = Mathf.Lerp(startX, targetX, t);
-            zonePanelRect.anchoredPosition = new Vector2(x, zonePanelRect.anchoredPosition.y);
+            panelRect.anchoredPosition = new Vector2(x, panelRect.anchoredPosition.y);
             yield return null;
         }
 
-        zonePanelRect.anchoredPosition = new Vector2(targetX, zonePanelRect.anchoredPosition.y);
-        _slideCoroutine = null;
+        panelRect.anchoredPosition = new Vector2(targetX, panelRect.anchoredPosition.y);
     }
 }
