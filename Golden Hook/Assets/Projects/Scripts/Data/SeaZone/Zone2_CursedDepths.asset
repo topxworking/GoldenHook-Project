@@ -10,21 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb21b97935f053e4594473867f0b94b5, type: 3}
-  m_Name: Zone1_Coastal
+  m_Name: Zone2_CursedDepths
   m_EditorClassIdentifier: Assembly-CSharp::SeaZoneData
-  zoneName: Coastal Waters
+  zoneName: Cursed Depths
   zoneBackground: {fileID: 0}
-  zoneThemeColor: {r: 0.101960786, g: 0.32156864, b: 0.4627451, a: 1}
-  zoneIndex: 0
+  zoneThemeColor: {r: 0.1764706, g: 0.29803923, b: 0.78431374, a: 1}
+  zoneIndex: 1
   fishPool:
   - fishData: {fileID: 11400000, guid: 0675e44f374699b42a208a3692477d9e, type: 2}
     spawnWeightOveride: 0
   - fishData: {fileID: 11400000, guid: debfd0205cb1e0c46a4a16be1daab2d8, type: 2}
     spawnWeightOveride: 0
-  - fishData: {fileID: 11400000, guid: 0675e44f374699b42a208a3692477d9e, type: 2}
+  - fishData: {fileID: 11400000, guid: 956d01b4125b5644eba8bf7fd1a3d2e6, type: 2}
     spawnWeightOveride: 0
-  isUnlocked: 1
-  unlockCost: 0
-  requiredZoneIndex: -1
-  rareFishBonus: 0
-  incomeMultiplier: 1
+  - fishData: {fileID: 11400000, guid: a6e295575ec9ee349a5110d388422de7, type: 2}
+    spawnWeightOveride: 0
+  - fishData: {fileID: 11400000, guid: db94642cb0107b64c83ad8607ab9bb9b, type: 2}
+    spawnWeightOveride: 0
+  isUnlocked: 0
+  unlockCost: 5000
+  requiredZoneIndex: 0
+  rareFishBonus: 5
+  incomeMultiplier: 1.8

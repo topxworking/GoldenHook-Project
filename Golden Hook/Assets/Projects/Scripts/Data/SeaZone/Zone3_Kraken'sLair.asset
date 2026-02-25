@@ -10,15 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb21b97935f053e4594473867f0b94b5, type: 3}
-  m_Name: Zone2_DeepSea
+  m_Name: Zone3_Kraken'sLair
   m_EditorClassIdentifier: Assembly-CSharp::SeaZoneData
-  zoneName: Deep Sea
+  zoneName: Kraken's Lair
   zoneBackground: {fileID: 0}
-  zoneThemeColor: {r: 0.050980393, g: 0.16862746, b: 0.27058825, a: 1}
-  zoneIndex: 1
+  zoneThemeColor: {r: 0.039215688, g: 0.43137255, b: 0.30980393, a: 1}
+  zoneIndex: 2
   fishPool:
-  - fishData: {fileID: 11400000, guid: 0675e44f374699b42a208a3692477d9e, type: 2}
-    spawnWeightOveride: 0
   - fishData: {fileID: 11400000, guid: debfd0205cb1e0c46a4a16be1daab2d8, type: 2}
     spawnWeightOveride: 0
   - fishData: {fileID: 11400000, guid: 956d01b4125b5644eba8bf7fd1a3d2e6, type: 2}
@@ -27,8 +25,14 @@ MonoBehaviour:
     spawnWeightOveride: 0
   - fishData: {fileID: 11400000, guid: db94642cb0107b64c83ad8607ab9bb9b, type: 2}
     spawnWeightOveride: 0
+  - fishData: {fileID: 11400000, guid: 4afabeab69511a9418061983176cd958, type: 2}
+    spawnWeightOveride: 0
+  - fishData: {fileID: 11400000, guid: c52ecf327b6395a45913fdf806cfb011, type: 2}
+    spawnWeightOveride: 0
+  - fishData: {fileID: 11400000, guid: 8695c61e1c506134fa2c7046d64f758a, type: 2}
+    spawnWeightOveride: 0
   isUnlocked: 0
-  unlockCost: 5000
-  requiredZoneIndex: 0
-  rareFishBonus: 5
-  incomeMultiplier: 1.8
+  unlockCost: 50000
+  requiredZoneIndex: 1
+  rareFishBonus: 10
+  incomeMultiplier: 3.5

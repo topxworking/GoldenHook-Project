@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SeaZoneData
   zoneName: The Abyss
   zoneBackground: {fileID: 0}
-  zoneThemeColor: {r: 0.019607844, g: 0.019607844, b: 0.0627451, a: 1}
+  zoneThemeColor: {r: 0.101960786, g: 0.039215688, b: 0.23921569, a: 1}
   zoneIndex: 3
   fishPool:
   - fishData: {fileID: 11400000, guid: a6e295575ec9ee349a5110d388422de7, type: 2}
