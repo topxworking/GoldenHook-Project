@@ -5,8 +5,9 @@ public class EconomyManager : MonoBehaviour
 {
     public static EconomyManager Instance { get; private set; }
 
-    [Header("Starting Money")]
+    [Header("Settings")]
     [SerializeField] private int startingMoney = 0;
+    public const int MaxMoney = 2147000000;
 
     public int CurrentMoney { get; private set; }
 
@@ -17,7 +18,8 @@ public class EconomyManager : MonoBehaviour
     {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
-        CurrentMoney = startingMoney;
+
+        SetMoney(startingMoney);
     }
 
     private void OnEnable()
@@ -64,26 +66,30 @@ public class EconomyManager : MonoBehaviour
     public void AddMoney(int amount)
     {
         int old = CurrentMoney;
-        CurrentMoney = Mathf.Max(0, CurrentMoney + amount);
+
+        long potentialTotal = (long)CurrentMoney + amount;
+
+        CurrentMoney = (int)Math.Clamp(potentialTotal, 0, MaxMoney);
 
         EventManager.Publish(new MoneyChangedEvent
         {
             OldAmount = old,
             NewAmount = CurrentMoney,
-            Delta = amount,
+            Delta = CurrentMoney - old,
         });
     }
 
     public void SetMoney(int amount)
     {
         int old = CurrentMoney;
-        CurrentMoney = Mathf.Max(0, amount);
+
+        CurrentMoney = Mathf.Clamp(amount, 0, MaxMoney);
 
         EventManager.Publish(new MoneyChangedEvent
         {
             OldAmount = old,
             NewAmount = CurrentMoney,
-            Delta = amount - old,
+            Delta = CurrentMoney - old,
         });
     }
 

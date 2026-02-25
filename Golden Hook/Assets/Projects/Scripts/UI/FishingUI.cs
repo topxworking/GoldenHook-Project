@@ -351,7 +351,6 @@ public class FishingUI : MonoBehaviour
             if (entry.nameText != null)
             {
                 entry.nameText.text = isUnlocked ? zone.zoneName : $"{zone.zoneName}";
-                entry.nameText.color = isUnlocked ? Color.white : new Color(0.6f, 0.6f, 0.6f);
             }
 
             if (entry.costText != null)
@@ -359,10 +358,6 @@ public class FishingUI : MonoBehaviour
                 entry.costText.text = isCurrentZone ? "" : isUnlocked
                     ? $"x{zone.incomeMultiplier}"
                     : $"${zone.unlockCost:N0}";
-
-                entry.costText.color = canAfford && !isUnlocked
-                    ? new Color(1f, 0.85f, 0.3f)
-                    : new Color(0.7f, 0.7f, 0.7f);
             }
 
             if (entry.activeLabel != null)
@@ -481,11 +476,11 @@ public class FishingUI : MonoBehaviour
         if (int.TryParse(raw, out int amount) && amount > 0)
         {
             EconomyManager.Instance?.AddMoney(amount);
-            SetStatus($"[DEBUG] +${amount:N0}");
+            SetStatus($"Plundered +${amount:N0} doubloons!");
         }
         else
         {
-            SetStatus("[DEBUG] Invalid amount");
+            SetStatus("Invalid treasure, ye scoundrel!");
         }
 
         debugInputPanel?.SetActive(false);
