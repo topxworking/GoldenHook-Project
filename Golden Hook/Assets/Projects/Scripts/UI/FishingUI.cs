@@ -325,7 +325,7 @@ public class FishingUI : MonoBehaviour
             if (entry.costText != null)
             {
                 entry.costText.text = isCurrentZone ? "" : isUnlocked
-                    ? $"x{zone.incomeMultiplier} income"
+                    ? $"x{zone.incomeMultiplier}"
                     : $"${zone.unlockCost:N0}";
 
                 entry.costText.color = canAfford && !isUnlocked

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Boat_Lv1
   m_EditorClassIdentifier: Assembly-CSharp::BoatData
   boatName: Wooden Raft
-  boatSprite: {fileID: 0}
+  boatSprite: {fileID: 2698280907162860624, guid: 378e73bcd919eb84cb83410c0f87e1fd, type: 3}
   level: 1
   workerSlots: 1
   incomeMultiplier: 1

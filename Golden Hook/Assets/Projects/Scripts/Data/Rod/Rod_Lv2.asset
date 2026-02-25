@@ -21,4 +21,4 @@ MonoBehaviour:
   autoFishInterval: 10
   upgradeCost: 500
   nextUpgrade: {fileID: 11400000, guid: 844302c1a6823444798b581a3136f029, type: 2}
-  isUnlocked: 1
+  isUnlocked: 0
