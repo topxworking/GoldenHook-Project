@@ -42,6 +42,11 @@ public class FishingUI : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private GameObject debugPanel;
     [SerializeField] private Button debugMenuButton;
+    [SerializeField] private Button debugAddMoneyButton;
+    [SerializeField] private GameObject debugInputPanel;
+    [SerializeField] private TMP_InputField debugInputField;
+    [SerializeField] private Button debugConfirmButton;
+    [SerializeField] private Button debugCancelButton;
 
     [System.Serializable]
     public class ZoneButtonEntry
@@ -73,7 +78,14 @@ public class FishingUI : MonoBehaviour
         hireCrewButton?.onClick.AddListener(OnHireWorker);
 
         debugMenuButton?.onClick.AddListener(OnDebugMenuToggle);
+        debugAddMoneyButton?.onClick.AddListener(OnDebugAddMoneyPressed);
+        debugConfirmButton?.onClick.AddListener(OnDebugConfirm);
+        debugCancelButton?.onClick.AddListener(OnDebugCancel);
+
+        debugInputField?.onSubmit.AddListener(_ => OnDebugConfirm());
+
         debugPanel?.SetActive(false);
+        debugInputPanel?.SetActive(false);
 
         foreach (var entry in zoneButtons)
         {
@@ -430,11 +442,39 @@ public class FishingUI : MonoBehaviour
     {
         if (debugPanel == null) return;
         debugPanel.SetActive(!debugPanel.activeSelf);
+        debugInputPanel?.SetActive(false);
     }
 
-    public void DebugAddMoney(int amount)
+    private void OnDebugAddMoneyPressed()
     {
-        EconomyManager.Instance?.AddMoney(amount);
-        SetStatus($"[DEBUG] +${amount:N0} added");
+        if (debugInputPanel == null) return;
+        debugInputPanel.SetActive(true);
+        debugInputField?.SetTextWithoutNotify("");
+        debugInputField?.ActivateInputField();
+    }
+
+    private void OnDebugConfirm()
+    {
+        if (debugInputField == null) return;
+
+        string raw = debugInputField.text.Trim();
+        if (int.TryParse(raw, out int amount) && amount > 0)
+        {
+            EconomyManager.Instance?.AddMoney(amount);
+            SetStatus($"[DEBUG] +${amount:N0}");
+        }
+        else
+        {
+            SetStatus("[DEBUG] Invalid amount");
+        }
+
+        debugInputPanel?.SetActive(false);
+        debugInputField?.SetTextWithoutNotify("");
+    }
+
+    private void OnDebugCancel()
+    {
+        debugInputPanel?.SetActive(false);
+        debugInputField?.SetTextWithoutNotify("");
     }
 }
