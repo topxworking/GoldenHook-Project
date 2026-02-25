@@ -11,7 +11,6 @@ public interface IFishingState
     void OnPlayerInput(FishingStateMachine sm);
 }
 
-// Idle
 public class IdleState : IFishingState
 {
     public FishingStateId StateId => FishingStateId.Idle;
@@ -28,7 +27,6 @@ public class IdleState : IFishingState
         sm.TransitionTo(FishingStateId.Casting);
 }
 
-// Casting
 public class CastingState : IFishingState
 {
     public FishingStateId StateId => FishingStateId.Casting;
@@ -53,7 +51,6 @@ public class CastingState : IFishingState
     public void OnPlayerInput(FishingStateMachine sm) { }
 }
 
-// Waiting
 public class WaitingState : IFishingState
 {
     public FishingStateId StateId => FishingStateId.Waiting;
@@ -81,7 +78,6 @@ public class WaitingState : IFishingState
     public void OnPlayerInput(FishingStateMachine sm) { }
 }
 
-// Hooked
 public class HookedState : IFishingState
 {
     public FishingStateId StateId => FishingStateId.Hooked;
@@ -120,7 +116,6 @@ public class HookedState : IFishingState
         sm.TransitionTo(FishingStateId.ReelIn);
 }
 
-// ReelIn
 public class ReelInState : IFishingState
 {
     public FishingStateId StateId => FishingStateId.ReelIn;

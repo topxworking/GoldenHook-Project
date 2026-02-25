@@ -22,11 +22,7 @@ public class ZoneManager : MonoBehaviour
         {
             if (zone.isUnlocked)
                 _unlockedZoneIndexes.Add(zone.zoneIndex);
-
-            Debug.Log($"[ZoneManager] {zone.zoneName} zoneIndex={zone.zoneIndex} isUnlocked={zone.isUnlocked}");
         }
-
-        Debug.Log($"[ZoneManager] UnlockedSet = {string.Join(",", _unlockedZoneIndexes)}");
     }
 
     private void Start()
@@ -57,7 +53,6 @@ public class ZoneManager : MonoBehaviour
         zone.isUnlocked = true;
 
         EventManager.Publish(new ZoneUnlockedEvent { ZoneData = zone });
-        Debug.Log($"[Zone] Unlocked: {zone.zoneName}");
         return true;
     }
 
@@ -71,7 +66,6 @@ public class ZoneManager : MonoBehaviour
         Camera.main.backgroundColor = zone.zoneThemeColor * 0.3f;
 
         UpgradeManager.Instance?.RecalculatePassiveIncome();
-        Debug.Log($"[Zone] Switched to: {zone.zoneName}");
     }
 
     public List<SeaZoneData> GetAllZones() => allZones;

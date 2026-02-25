@@ -16,6 +16,12 @@ public class BoatViewController : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(InitAfterManager());
+    }
+
+    private System.Collections.IEnumerator InitAfterManager()
+    {
+        yield return null;
         RefreshSprite();
     }
 
@@ -32,7 +38,5 @@ public class BoatViewController : MonoBehaviour
 
         if (boat.boatSprite != null)
             boatSpriteRenderer.sprite = boat.boatSprite;
-
-        Debug.Log($"[Boat] Sprite changed to: {boat.boatName}");
     }
 }

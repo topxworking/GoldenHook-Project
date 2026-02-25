@@ -120,7 +120,6 @@ public class FishingUI : MonoBehaviour
     private System.Collections.IEnumerator InitAfterManager()
     {
         yield return null;
-        yield return null;
 
         _upgrade = UpgradeManager.Instance;
         _fishing = FindFirstObjectByType<FishingController>();

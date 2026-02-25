@@ -134,7 +134,6 @@ public class UpgradeManager : MonoBehaviour
         foreach (var worker in _hiredWorkers)
             income += worker.incomeBonus * (CurrentBoat?.incomeMultiplier ?? 1f) * zoneMultiplier * 10f;
 
-        Debug.Log($"[Passive] workers={_hiredWorkers.Count} | zoneMult={zoneMultiplier} | income={income}");
         EconomyManager.Instance?.SetPassiveIncome(income);
     }
 

@@ -47,12 +47,10 @@ public class EconomyManager : MonoBehaviour
     private void OnFishCaught(FishCaughtEvent e)
     {
         AddMoney(e.SellPrice);
-        Debug.Log($"[Economy] Caught {e.FishData.fishName} ({e.FishData.rarity}) → +${e.SellPrice}");
     }
 
     private void OnUpgrade(UpgradeEvent e)
     {
-        Debug.Log($"[Economy] Upgrade: {e.UpgradeType} → Level {e.NewLevel}");
         RecalculatePassiveIncome();
     }
 
