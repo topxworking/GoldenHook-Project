@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +10,7 @@ public class FishingUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI statusText;
     [SerializeField] private TextMeshProUGUI passiveIncomeText;
     [SerializeField] private TextMeshProUGUI equipmentText;
+    [SerializeField] private GameObject autoModePopup;
 
     [Header("Buttons")]
     [SerializeField] private Button castButton;
@@ -18,11 +18,7 @@ public class FishingUI : MonoBehaviour
     [SerializeField] private Button autoToggleButton;
     [SerializeField] private Button upgradeRodButton;
     [SerializeField] private Button upgradeBoatButton;
-    [SerializeField] private Button hireWorkerButton;
-    [SerializeField] private Image autoToggleImage;
-    [SerializeField] private Sprite autoOnSprite;
-    [SerializeField] private Sprite autoOffSprite;
-    [SerializeField] private Sprite autoLockedSprite;
+    [SerializeField] private Button hireCrewButton;
 
     [Header("Catch Popup")]
     [SerializeField] private GameObject catchPopupPanel;
@@ -37,8 +33,8 @@ public class FishingUI : MonoBehaviour
     [Header("Upgrade Costs")]
     [SerializeField] private TextMeshProUGUI rodCostText;
     [SerializeField] private TextMeshProUGUI boatCostText;
-    [SerializeField] private TextMeshProUGUI workerCostText;
-    [SerializeField] private TextMeshProUGUI workerCountText;
+    [SerializeField] private TextMeshProUGUI crewCostText;
+    [SerializeField] private TextMeshProUGUI crewCountText;
 
     [Header("Zone Buttons")]
     [SerializeField] private List<ZoneButtonEntry> zoneButtons = new();
@@ -70,7 +66,7 @@ public class FishingUI : MonoBehaviour
         autoToggleButton?.onClick.AddListener(OnAutoToggle);
         upgradeRodButton?.onClick.AddListener(OnUpgradeRod);
         upgradeBoatButton?.onClick.AddListener(OnUpgradeBoat);
-        hireWorkerButton?.onClick.AddListener(OnHireWorker);
+        hireCrewButton?.onClick.AddListener(OnHireWorker);
 
         foreach (var entry in zoneButtons)
         {
@@ -90,6 +86,7 @@ public class FishingUI : MonoBehaviour
         yield return null;
 
         _upgrade = UpgradeManager.Instance;
+        _fishing = FindFirstObjectByType<FishingController>();
 
         RefreshAutoButton();
         RefreshUpgradeUI();
@@ -140,12 +137,14 @@ public class FishingUI : MonoBehaviour
         catchPopupPanel.SetActive(true);
         if (catchFishImage != null) catchFishImage.sprite = fish.Data.fishSprite;
         if (catchFishImage != null) catchFishImage.color = fish.Data.GetRarityColor();
-        if (catchFishImage != null) catchFishName.text = fish.Data.fishName;
+        if (catchFishName != null) catchFishName.text = fish.Data.fishName;
+
         if (catchFishRarity != null)
         {
             catchFishRarity.text = fish.Data.rarity.ToString();
             catchFishRarity.color = fish.Data.GetRarityColor();
         }
+
         if (catchFishPrice != null) catchFishPrice.text = $"+${fish.SellPrice} ({fish.Weight:F1}kg)";
 
         _popupTimer = 2.5f;
@@ -174,6 +173,8 @@ public class FishingUI : MonoBehaviour
         castButton.interactable = !_isAutoMode;
         RefreshAutoButton();
         RefreshUpgradeUI();
+
+        ShowAutoModePopup(_isAutoMode);
     }
 
     private void OnUpgradeRod()
@@ -200,6 +201,9 @@ public class FishingUI : MonoBehaviour
     private void OnMoneyChanged(MoneyChangedEvent e)
     {
         if (moneyText != null) moneyText.text = $"${e.NewAmount:N0}";
+
+        if (_upgrade == null) _upgrade = UpgradeManager.Instance;
+
         RefreshUpgradeUI();
         RefreshEquipmentText();
     }
@@ -222,12 +226,8 @@ public class FishingUI : MonoBehaviour
 
         if (rodCostText != null)        rodCostText.text = rodCost > 0 ? $"${rodCost}" : "MAX";
         if (boatCostText != null)       boatCostText.text = boatCost > 0 ? $"${boatCost}" : "MAX";
-        if (workerCostText != null)     workerCostText.text = workerCost > 0 ? $"${workerCost}" : "N/A";
-        if (workerCountText != null)    workerCountText.text = $"Workers: {_upgrade.WorkerCount}/{_upgrade.MaxWorkers}";
-
-        if (upgradeRodButton != null)   upgradeRodButton.interactable = _upgrade.CanUpgradeRod() && money >= rodCost;
-        if (upgradeBoatButton != null)  upgradeBoatButton.interactable = _upgrade.CanUpgradeBoat() && money >= boatCost;
-        if (hireWorkerButton != null)   hireWorkerButton.interactable = _upgrade.CanHireWorker() && money >= workerCost;
+        if (crewCostText != null)     crewCostText.text = workerCost > 0 ? $"${workerCost}" : "N/A";
+        if (crewCountText != null)    crewCountText.text = $"Crew: {_upgrade.WorkerCount}/{_upgrade.MaxWorkers}";
 
         bool isIdle = _fishing == null ||
             _fishing.CurrentStateId == FishingStateId.Idle;
@@ -236,8 +236,8 @@ public class FishingUI : MonoBehaviour
             upgradeRodButton.interactable = isIdle && _upgrade.CanUpgradeRod() && money >= rodCost;
         if (upgradeBoatButton != null)
             upgradeBoatButton.interactable = isIdle && _upgrade.CanUpgradeBoat() && money >= boatCost;
-        if (hireWorkerButton != null)
-            hireWorkerButton.interactable = isIdle && _upgrade.CanHireWorker() && money >= workerCost;
+        if (hireCrewButton != null)
+            hireCrewButton.interactable = isIdle && _upgrade.CanHireWorker() && money >= workerCost;
     }
 
     private void OnZoneUnlocked(ZoneUnlockedEvent e) => RefreshZoneButtons();
@@ -340,9 +340,8 @@ public class FishingUI : MonoBehaviour
                 castButton?.gameObject.SetActive(true);
                 castButton.interactable = !_isAutoMode;
                 reelButton.interactable = false;
-                upgradeRodButton.interactable = true;
-                upgradeBoatButton.interactable = true;
-                hireWorkerButton.interactable = true;
+                autoToggleButton.interactable = true;
+                RefreshUpgradeUI();
                 break;
 
             case FishingStateId.Casting:
@@ -350,7 +349,7 @@ public class FishingUI : MonoBehaviour
                 reelButton.interactable = false;
                 upgradeRodButton.interactable = false;
                 upgradeBoatButton.interactable = false;
-                hireWorkerButton.interactable = false;
+                hireCrewButton.interactable = false;
                 break;
 
             case FishingStateId.Waiting:
@@ -358,7 +357,7 @@ public class FishingUI : MonoBehaviour
                 reelButton.interactable = false;
                 upgradeRodButton.interactable = false;
                 upgradeBoatButton.interactable = false;
-                hireWorkerButton.interactable = false;
+                hireCrewButton.interactable = false;
                 break;
 
             case FishingStateId.Hooked:
@@ -366,14 +365,14 @@ public class FishingUI : MonoBehaviour
                 reelButton.interactable = !_isAutoMode;
                 upgradeRodButton.interactable = false;
                 upgradeBoatButton.interactable = false;
-                hireWorkerButton.interactable = false;
+                hireCrewButton.interactable = false;
                 break;
 
             case FishingStateId.ReelIn:
                 reelButton.interactable = false;
                 upgradeRodButton.interactable = false;
                 upgradeBoatButton.interactable = false;
-                hireWorkerButton.interactable = false;
+                hireCrewButton.interactable = false;
                 break;
         }
     }
@@ -388,20 +387,9 @@ public class FishingUI : MonoBehaviour
         if (autoToggleButton == null) return;
 
         if (!IsAutoUnlocked())
-        {
-            autoToggleImage.sprite = autoLockedSprite;
-            autoToggleButton.interactable = true;
-        }
-        else if (_isAutoMode)
-        {
-            autoToggleImage.sprite = autoOnSprite;
-            autoToggleButton.interactable = true;
-        }
+            autoToggleButton.interactable = false;
         else
-        {
-            autoToggleImage.sprite = autoOffSprite;
             autoToggleButton.interactable = true;
-        }
     }
 
     private void RefreshEquipmentText()
@@ -413,5 +401,12 @@ public class FishingUI : MonoBehaviour
         string boatName = _upgrade.CurrentBoat?.boatName ?? "None";
 
         equipmentText.text = $"Rod: {rodName} Lv.{rodLv} | Boat: {boatName}";
+    }
+
+    private void ShowAutoModePopup(bool isAuto)
+    {
+        if (autoModePopup == null) return;
+
+        autoModePopup.SetActive(isAuto);
     }
 }

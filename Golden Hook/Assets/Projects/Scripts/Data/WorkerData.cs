@@ -4,8 +4,8 @@ using UnityEngine;
 public class WorkerData : ScriptableObject
 {
     [Header("Identity")]
-    public string workerName;
-    public Sprite workerSprite;
+    public string crewName;
+    public Sprite crewSprite;
     public int level = 1;
 
     [Header("Stats")]

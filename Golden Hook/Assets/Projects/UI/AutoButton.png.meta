@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 3b15a1539b765244689944465cb44593
+guid: ea5d0803c9f20cf46925ac78584726dc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6433195090854995128
-    second: BoatUpgrade_0
+      213: 3657582004280761125
+    second: AutoButton_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BoatUpgrade_0
+      name: AutoButton_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 145
-        height: 144
+        width: 121
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 84b1dce3623b8b6a0800000000000000
-      internalID: -6433195090854995128
+      spriteID: 52b1406447752c230800000000000000
+      internalID: 3657582004280761125
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      BoatUpgrade_0: -6433195090854995128
+      AutoButton_0: 3657582004280761125
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: bbc5ec93356a89a44ad7990cc8357e58
+guid: 1bbf2f6ef3c1e704fa60582259e4e675
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7292111916669952558
-    second: Auto LOCK_0
+      213: -1492234312204110100
+    second: UpgradeRodButton_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Auto LOCK_0
+      name: UpgradeRodButton_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 145
-        height: 144
+        width: 411
+        height: 55
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2dd9e78d8d63dca90800000000000000
-      internalID: -7292111916669952558
+      spriteID: ce6bc6b9cc48a4be0800000000000000
+      internalID: -1492234312204110100
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Auto LOCK_0: -7292111916669952558
+      UpgradeRodButton_0: -1492234312204110100
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

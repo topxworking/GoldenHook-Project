@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32a1869bd02efde4a956b4bbfba876dc, type: 3}
   m_Name: Worker_Lv1
   m_EditorClassIdentifier: Assembly-CSharp::WorkerData
-  workerName: Fisher Joe
-  workerSprite: {fileID: 0}
+  crewName: Crew
+  crewSprite: {fileID: 21300000, guid: 45d861e345eda944daa850e5ed7158ee, type: 3}
   level: 1
   fishingSpeed: 1
   incomeBonus: 0.1

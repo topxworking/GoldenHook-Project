@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 6e8c401a27b5484449a199fcacf0f0a9
+guid: cf8a438348aa91348852a42d142e6ba4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3147571783073453633
-    second: RodUpgrade_0
+      213: -1032351535642596568
+    second: HireCrewButton_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: RodUpgrade_0
+      name: HireCrewButton_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 145
-        height: 144
+        width: 411
+        height: 55
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 146d2233cdb6eab20800000000000000
-      internalID: 3147571783073453633
+      spriteID: 82ba1ba7fb95ca1f0800000000000000
+      internalID: -1032351535642596568
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      RodUpgrade_0: 3147571783073453633
+      HireCrewButton_0: -1032351535642596568
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 275ae787f1379344b88393fb560d7860
+guid: 0a988fc2c63c5804f812776633fbb452
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8792653807696555541
-    second: HireWorker_0
+      213: -3560852360957142242
+    second: skull_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HireWorker_0
+      name: skull_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 145
-        height: 144
+        y: 11
+        width: 512
+        height: 490
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: be1d24782f73af580800000000000000
-      internalID: -8792653807696555541
+      spriteID: e1bd987d4af459ec0800000000000000
+      internalID: -3560852360957142242
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      HireWorker_0: -8792653807696555541
+      skull_0: -3560852360957142242
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -17,6 +17,6 @@ MonoBehaviour:
   rarity: 0
   minWeight: 0.1
   maxWeight: 0.5
-  basePrice: 100000
+  basePrice: 1000
   catchDifficuty: 1
   catchChanceModifier: 1
