@@ -16,13 +16,15 @@ public class ZoneManager : MonoBehaviour
     {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
-        _unlockedZoneIndexes.Add(0);
 
         foreach (var zone in allZones)
-        {
-            if (zone.isUnlocked)
-                _unlockedZoneIndexes.Add(zone.zoneIndex);
-        }
+            zone.isUnlocked = false;
+
+        _unlockedZoneIndexes.Clear();
+        _unlockedZoneIndexes.Add(0);
+
+        var startZone = allZones.Find(z => z.zoneIndex == 0);
+        if (startZone != null) startZone.isUnlocked = true;
     }
 
     private void Start()
@@ -50,7 +52,6 @@ public class ZoneManager : MonoBehaviour
         }
 
         _unlockedZoneIndexes.Add(zone.zoneIndex);
-        zone.isUnlocked = true;
 
         EventManager.Publish(new ZoneUnlockedEvent { ZoneData = zone });
         return true;
@@ -73,6 +74,9 @@ public class ZoneManager : MonoBehaviour
 
     public void LoadUnlockedZones(List<int> indexes)
     {
+        foreach (var zone in allZones)
+            zone.isUnlocked = false;
+
         _unlockedZoneIndexes.Clear();
         _unlockedZoneIndexes.Add(0);
 
