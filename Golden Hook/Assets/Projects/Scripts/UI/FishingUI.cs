@@ -559,8 +559,6 @@ public class FishingUI : MonoBehaviour
     {
         GameManager.Instance?.SaveGame();
 
-        UnityEditor.EditorApplication.isPlaying = false;
-
         Application.Quit();
     }
 
