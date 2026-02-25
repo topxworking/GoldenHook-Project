@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -62,7 +63,7 @@ public class GameManager : MonoBehaviour
             if (ZoneManager.Instance.IsZoneUnlocked(zone))
                 indexes.Add(zone.zoneIndex);
 
-        PlayerPrefs.SetString("save_zone", string.Join(",", indexes));
+        PlayerPrefs.SetString("save_zones", string.Join(",", indexes));
 
         PlayerPrefs.Save();
     }
@@ -150,5 +151,8 @@ public class GameManager : MonoBehaviour
     public void ResetSave()
     {
         PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
