@@ -53,6 +53,12 @@ public class FishingUI : MonoBehaviour
     [SerializeField] private Button debugConfirmButton;
     [SerializeField] private Button debugCancelButton;
 
+    [Header("Quit Dialog")]
+    [SerializeField] private GameObject quitDialogPanel;
+    [SerializeField] private Button quitButton;
+    [SerializeField] private Button confirmQuitButton;
+    [SerializeField] private Button cancelQuitButton;
+
     [System.Serializable]
     public class ZoneButtonEntry
     {
@@ -98,6 +104,11 @@ public class FishingUI : MonoBehaviour
         debugCancelButton?.onClick.AddListener(OnDebugCancel);
         debugInputField?.onSubmit.AddListener(_ => OnDebugConfirm());
 
+        quitButton?.onClick.AddListener(OnQuitPressed);
+        confirmQuitButton?.onClick.AddListener(OnConfirmQuit);
+        cancelQuitButton?.onClick.AddListener(OnCancelQuit);
+
+        quitDialogPanel?.SetActive(false);
         debugInputPanel?.SetActive(false);
 
         foreach (var entry in zoneButtons)
@@ -133,14 +144,17 @@ public class FishingUI : MonoBehaviour
     private System.Collections.IEnumerator InitAfterManager()
     {
         yield return null;
+        yield return null;
 
         _upgrade = UpgradeManager.Instance;
         _fishing = FindFirstObjectByType<FishingController>();
 
+        Debug.Log($"[UI] ZoneManager={ZoneManager.Instance != null} | CurrentZone={ZoneManager.Instance?.CurrentZone?.zoneName}");
+
         RefreshAutoButton();
         RefreshUpgradeUI();
-        RefreshZoneButtons();
         RefreshEquipmentText();
+        RefreshZoneButtons();
     }
 
     private void OnEnable()
@@ -169,7 +183,7 @@ public class FishingUI : MonoBehaviour
         }
 
         if (passiveIncomeText != null && EconomyManager.Instance != null)
-            passiveIncomeText.text = $"+${EconomyManager.Instance.PassiveIncome:F2}/s passive";
+            passiveIncomeText.text = $"+${EconomyManager.Instance.PassiveIncome:F2}/s passive income";
     }
 
     public void SetStatus(string msg)
@@ -534,5 +548,24 @@ public class FishingUI : MonoBehaviour
         }
 
         panelRect.anchoredPosition = new Vector2(targetX, panelRect.anchoredPosition.y);
+    }
+
+    private void OnQuitPressed()
+    {
+        quitDialogPanel?.SetActive(true);
+    }
+
+    private void OnConfirmQuit()
+    {
+        GameManager.Instance?.SaveGame();
+
+        UnityEditor.EditorApplication.isPlaying = false;
+
+        Application.Quit();
+    }
+
+    private void OnCancelQuit()
+    {
+        quitDialogPanel?.SetActive(false);
     }
 }

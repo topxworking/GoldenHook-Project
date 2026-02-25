@@ -133,6 +133,20 @@ public class UpgradeManager : MonoBehaviour
         EconomyManager.Instance?.SetPassiveIncome(income);
     }
 
+    public void ResetToDefault()
+    {
+        CurrentRod = StartingRod;
+        CurrentBoat = StartingBoat;
+        _hiredWorkers.Clear();
+
+        fishingController?.SetRod(CurrentRod);
+        RecalculatePassiveIncome();
+
+        EventManager.Publish(new UpgradeEvent { UpgradeType = "Rod", NewLevel = CurrentRod.level });
+        EventManager.Publish(new UpgradeEvent { UpgradeType = "Boat", NewLevel = CurrentBoat.level });
+        EventManager.Publish(new UpgradeEvent { UpgradeType = "Worker", NewLevel = 0 });
+    }
+
     public int GetRodUpgradeCost()  => CurrentRod?.nextUpgrade?.upgradeCost ?? -1;
     public int GetBoatUpgradeCost() => CurrentBoat?.nextUpgrade?.upgradeCost ?? -1;
     public int GetWorkerHireCost()

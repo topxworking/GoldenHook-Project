@@ -17,20 +17,27 @@ public class ZoneManager : MonoBehaviour
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
 
-        foreach (var zone in allZones)
-            zone.isUnlocked = false;
-
         _unlockedZoneIndexes.Clear();
         _unlockedZoneIndexes.Add(0);
 
-        var startZone = allZones.Find(z => z.zoneIndex == 0);
-        if (startZone != null) startZone.isUnlocked = true;
+        foreach (var zone in allZones)
+        {
+            if (zone.isUnlocked)
+                _unlockedZoneIndexes.Add(zone.zoneIndex);
+        }
+
+        foreach (var zone in allZones)
+        {
+            zone.isUnlocked = _unlockedZoneIndexes.Contains(zone.zoneIndex);
+        }
     }
 
     private void Start()
     {
         var startZone = allZones.Find(z => z.zoneIndex == 0);
         if (startZone != null) SwitchToZone(startZone);
+
+        EventManager.Publish(new ZoneUnlockedEvent { ZoneData = startZone });
     }
 
     public bool IsZoneUnlocked(SeaZoneData zone) => _unlockedZoneIndexes.Contains(zone.zoneIndex);
@@ -52,6 +59,7 @@ public class ZoneManager : MonoBehaviour
         }
 
         _unlockedZoneIndexes.Add(zone.zoneIndex);
+        zone.isUnlocked = true;
 
         EventManager.Publish(new ZoneUnlockedEvent { ZoneData = zone });
         return true;
@@ -86,5 +94,19 @@ public class ZoneManager : MonoBehaviour
         foreach (var zone in allZones)
             if (_unlockedZoneIndexes.Contains(zone.zoneIndex))
                 zone.isUnlocked = true;
+    }
+
+    public void ResetUnlockedZones()
+    {
+        _unlockedZoneIndexes.Clear();
+        _unlockedZoneIndexes.Add(0);
+
+        foreach (var zone in allZones)
+            zone.isUnlocked = zone.zoneIndex == 0;
+
+        var startZone = allZones.Find(z => z.zoneIndex == 0);
+        if (startZone != null) SwitchToZone(startZone);
+
+        EventManager.Publish(new ZoneUnlockedEvent { ZoneData = startZone });
     }
 }

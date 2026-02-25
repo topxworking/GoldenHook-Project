@@ -151,8 +151,42 @@ public class GameManager : MonoBehaviour
     public void ResetSave()
     {
         PlayerPrefs.DeleteAll();
-        PlayerPrefs.Save();
+        ResetAllScriptableObjects();
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void ResetAllScriptableObjects()
+    {
+        if (zoneManager != null)
+        {
+            foreach (var zone in zoneManager.GetAllZones())
+            {
+                zone.isUnlocked = zone.zoneIndex == 0;
+            }
+
+            zoneManager.ResetUnlockedZones();
+        }
+
+        if (upgradeManager != null)
+        {
+            var rod = upgradeManager.StartingRod;
+            while (rod != null)
+            {
+                rod.isUnlocked = rod == upgradeManager.StartingRod;
+                rod = rod.nextUpgrade;
+            }
+
+            var boat = upgradeManager.StartingBoat;
+            while (boat != null)
+            {
+                boat.isUnlocked = boat == upgradeManager.StartingBoat;
+                boat = boat.nextUpgrade;
+            }
+
+            upgradeManager.ResetToDefault();
+        }
+
+        EconomyManager.Instance?.ResetMoney();
     }
 }

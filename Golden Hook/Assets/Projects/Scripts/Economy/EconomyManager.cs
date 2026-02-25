@@ -93,6 +93,13 @@ public class EconomyManager : MonoBehaviour
         });
     }
 
+    public void ResetMoney()
+    {
+        CurrentMoney = 0;
+        SetPassiveIncome(0f);
+        EventManager.Publish(new MoneyChangedEvent { NewAmount = 0 });
+    }
+
     public float PassiveIncome { get; private set; }
 
     public void SetPassiveIncome(float amount)

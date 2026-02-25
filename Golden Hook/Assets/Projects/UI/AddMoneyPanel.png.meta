@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 491d9a41d4696fa44b6a69383034a1a7
+guid: 7ead13245c49d534591db642e033697a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6416704506416456542
-    second: setting_0
+      213: 4327618412789416049
+    second: AddMoneyPanel_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: setting_0
+      name: AddMoneyPanel_0
       rect:
         serializedVersion: 2
-        x: 23
-        y: 23
-        width: 466
-        height: 466
+        x: 0
+        y: 0
+        width: 400
+        height: 145
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2ac1662af3943f6a0800000000000000
-      internalID: -6416704506416456542
+      spriteID: 170c0c9840ace0c30800000000000000
+      internalID: 4327618412789416049
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      setting_0: -6416704506416456542
+      AddMoneyPanel_0: 4327618412789416049
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
