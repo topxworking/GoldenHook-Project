@@ -41,7 +41,7 @@ MonoBehaviour:
     spawnWeightOveride: 0
   - fishData: {fileID: 11400000, guid: 8695c61e1c506134fa2c7046d64f758a, type: 2}
     spawnWeightOveride: 0
-  isUnlocked: 1
+  isUnlocked: 0
   unlockCost: 50000
   requiredZoneIndex: 1
   rareFishBonus: 10
