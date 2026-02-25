@@ -172,7 +172,6 @@ public class FishingUI : MonoBehaviour
 
         catchPopupPanel.SetActive(true);
         if (catchFishImage != null) catchFishImage.sprite = fish.Data.fishSprite;
-        if (catchFishImage != null) catchFishImage.color = fish.Data.GetRarityColor();
         if (catchFishName != null) catchFishName.text = fish.Data.fishName;
 
         if (catchFishRarity != null)
@@ -265,7 +264,7 @@ public class FishingUI : MonoBehaviour
 
         if (rodCostText != null)        rodCostText.text = rodCost > 0 ? $"${rodCost}" : "MAX";
         if (boatCostText != null)       boatCostText.text = boatCost > 0 ? $"${boatCost}" : "MAX";
-        if (crewCostText != null)     crewCostText.text = workerCost > 0 ? $"${workerCost}" : "N/A";
+        if (crewCostText != null)     crewCostText.text = workerCost > 0 ? $"${workerCost}" : "MAX";
         if (crewCountText != null)    crewCountText.text = $"Crew: {_upgrade.WorkerCount}/{_upgrade.MaxWorkers}";
 
         bool isIdle = _fishing == null ||

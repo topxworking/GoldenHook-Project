@@ -20,4 +20,4 @@ MonoBehaviour:
   storageCapacity: 20
   upgradeCost: 100000
   nextUpgrade: {fileID: 0}
-  isUnlocked: 0
+  isUnlocked: 1

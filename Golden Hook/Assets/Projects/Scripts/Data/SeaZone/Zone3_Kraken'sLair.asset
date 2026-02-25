@@ -17,21 +17,31 @@ MonoBehaviour:
   zoneThemeColor: {r: 0.039215688, g: 0.43137255, b: 0.30980393, a: 1}
   zoneIndex: 2
   fishPool:
+  - fishData: {fileID: 11400000, guid: 956d01b4125b5644eba8bf7fd1a3d2e6, type: 2}
+    spawnWeightOveride: 0
   - fishData: {fileID: 11400000, guid: debfd0205cb1e0c46a4a16be1daab2d8, type: 2}
     spawnWeightOveride: 0
-  - fishData: {fileID: 11400000, guid: 956d01b4125b5644eba8bf7fd1a3d2e6, type: 2}
+  - fishData: {fileID: 11400000, guid: 0675e44f374699b42a208a3692477d9e, type: 2}
     spawnWeightOveride: 0
   - fishData: {fileID: 11400000, guid: a6e295575ec9ee349a5110d388422de7, type: 2}
     spawnWeightOveride: 0
-  - fishData: {fileID: 11400000, guid: db94642cb0107b64c83ad8607ab9bb9b, type: 2}
+  - fishData: {fileID: 11400000, guid: 74f2fa1f60ff7834dab3654254daf5c9, type: 2}
     spawnWeightOveride: 0
-  - fishData: {fileID: 11400000, guid: 4afabeab69511a9418061983176cd958, type: 2}
+  - fishData: {fileID: 11400000, guid: db94642cb0107b64c83ad8607ab9bb9b, type: 2}
     spawnWeightOveride: 0
   - fishData: {fileID: 11400000, guid: c52ecf327b6395a45913fdf806cfb011, type: 2}
     spawnWeightOveride: 0
+  - fishData: {fileID: 11400000, guid: 4afabeab69511a9418061983176cd958, type: 2}
+    spawnWeightOveride: 0
+  - fishData: {fileID: 11400000, guid: 97230d0e8c47d0a44ba768d8f167a6d2, type: 2}
+    spawnWeightOveride: 0
+  - fishData: {fileID: 11400000, guid: ebd2d090c5e0f484a85da43783da2b02, type: 2}
+    spawnWeightOveride: 0
+  - fishData: {fileID: 11400000, guid: 33d6408d5d809e8469567ce68f0c1a54, type: 2}
+    spawnWeightOveride: 0
   - fishData: {fileID: 11400000, guid: 8695c61e1c506134fa2c7046d64f758a, type: 2}
     spawnWeightOveride: 0
-  isUnlocked: 0
+  isUnlocked: 1
   unlockCost: 50000
   requiredZoneIndex: 1
   rareFishBonus: 10

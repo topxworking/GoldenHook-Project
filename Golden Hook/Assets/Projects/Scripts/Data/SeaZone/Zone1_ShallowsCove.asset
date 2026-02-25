@@ -17,7 +17,7 @@ MonoBehaviour:
   zoneThemeColor: {r: 0, g: 0.78431374, b: 0.83137256, a: 1}
   zoneIndex: 0
   fishPool:
-  - fishData: {fileID: 11400000, guid: 0675e44f374699b42a208a3692477d9e, type: 2}
+  - fishData: {fileID: 11400000, guid: 956d01b4125b5644eba8bf7fd1a3d2e6, type: 2}
     spawnWeightOveride: 0
   - fishData: {fileID: 11400000, guid: debfd0205cb1e0c46a4a16be1daab2d8, type: 2}
     spawnWeightOveride: 0

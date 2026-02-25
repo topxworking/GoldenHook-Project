@@ -8,10 +8,13 @@ public class UpgradeManager : MonoBehaviour
     [Header("Starting Equipment")]
     [SerializeField] private RodData startingRod;
     [SerializeField] private BoatData startingBoat;
-    [SerializeField] private WorkerData workerPrefabData;
+    [SerializeField] private WorkerData workerData;
 
     [Header("References")]
     [SerializeField] private FishingController fishingController;
+
+    [Header("Worker Scaling")]
+    [SerializeField] private float workerCostMultiplier = 1.5f;
 
     public RodData CurrentRod       { get; private set; }
     public BoatData CurrentBoat     { get; private set; }
@@ -37,12 +40,10 @@ public class UpgradeManager : MonoBehaviour
         RecalculatePassiveIncome();
     }
 
-    // Rod Upgrade
     public bool TryUpgradeRod()
     {
         if (CurrentRod?.nextUpgrade == null)
         {
-            Debug.Log("[Upgrade] Rod is already max level.");
             return false;
         }
 
@@ -54,16 +55,13 @@ public class UpgradeManager : MonoBehaviour
         fishingController?.SetRod(CurrentRod);
 
         EventManager.Publish(new UpgradeEvent { UpgradeType = "Rod", NewLevel = CurrentRod.level });
-        Debug.Log($"[Upgrade] Rod >> {CurrentRod.rodName}");
         return true;
     }
 
-    // Boat Upgrade
     public bool TryUpgradeBoat()
     {
         if (CurrentBoat?.nextUpgrade == null)
         {
-            Debug.Log("[Upgrade] Boat is already max level");
             return false;
         }
 
@@ -78,22 +76,20 @@ public class UpgradeManager : MonoBehaviour
         return true;
     }
 
-    // Worker Hire / Upgrade
     public bool TryHireWorker()
     {
-        if (workerPrefabData == null) return false;
-        if (_hiredWorkers.Count >= (CurrentBoat?.workerSlots ?? 1))
-        {
-            Debug.Log("[Upgrade] Worker slots full. Upgrade boat frist.");
+        if (workerData == null) return false;
+        if (!CanHireWorker()) return false;
+
+        int cost = GetWorkerHireCost();
+
+        if (!EconomyManager.Instance.TrySpend(cost))
             return false;
-        }
 
-        int cost = workerPrefabData.hireCost;
-        if (!EconomyManager.Instance.TrySpend(cost)) return false;
-
-        _hiredWorkers.Add(workerPrefabData);
+        _hiredWorkers.Add(workerData);
 
         EventManager.Publish(new UpgradeEvent { UpgradeType = "Worker", NewLevel = _hiredWorkers.Count });
+
         RecalculatePassiveIncome();
         return true;
     }
@@ -118,9 +114,9 @@ public class UpgradeManager : MonoBehaviour
 
     public void HireWorkerFree()
     {
-        if (workerPrefabData == null) return;
+        if (workerData == null) return;
         if (_hiredWorkers.Count >= (CurrentBoat?.workerSlots ?? 1)) return;
-        _hiredWorkers.Add(workerPrefabData);
+        _hiredWorkers.Add(workerData);
         EventManager.Publish(new UpgradeEvent { UpgradeType = "Worker", NewLevel = _hiredWorkers.Count });
         RecalculatePassiveIncome();
     }
@@ -139,7 +135,15 @@ public class UpgradeManager : MonoBehaviour
 
     public int GetRodUpgradeCost()  => CurrentRod?.nextUpgrade?.upgradeCost ?? -1;
     public int GetBoatUpgradeCost() => CurrentBoat?.nextUpgrade?.upgradeCost ?? -1;
-    public int GetWorkerHireCost()  => workerPrefabData?.hireCost ?? -1;
+    public int GetWorkerHireCost()
+    {
+        if (!CanHireWorker()) return 0;
+
+        int baseCost = workerData.hireCost;
+        float scaledCost = baseCost * Mathf.Pow(workerCostMultiplier, WorkerCount);
+
+        return Mathf.RoundToInt(scaledCost);
+    }
     public bool CanUpgradeRod()     => CurrentRod?.nextUpgrade != null;
     public bool CanUpgradeBoat()    => CurrentBoat?.nextUpgrade != null;
     public bool CanHireWorker()     => _hiredWorkers.Count < (CurrentBoat?.workerSlots ?? 1);

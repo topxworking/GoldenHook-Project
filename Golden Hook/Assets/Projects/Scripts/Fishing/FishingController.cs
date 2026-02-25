@@ -63,9 +63,14 @@ public class FishingController : MonoBehaviour
     private FishingStateMachine _stateMachine;
     private SeaZoneData _currentZone;
 
-    private void Start()
+    private void Awake()
     {
         _stateMachine = new FishingStateMachine(this);
+    }
+
+    private void Start()
+    {
+
         SetStrategy(new ManualFishingStrategy(CurrentRod));
     }
 

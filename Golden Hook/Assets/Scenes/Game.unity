@@ -963,7 +963,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -875, y: 40}
+  m_AnchoredPosition: {x: -875, y: 35}
   m_SizeDelta: {x: 121, y: 128}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &246642853
@@ -2454,7 +2454,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 40}
+  m_AnchoredPosition: {x: 0, y: 25}
   m_SizeDelta: {x: 139, y: 146}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &835400687
@@ -2574,7 +2574,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 150, y: 40}
+  m_AnchoredPosition: {x: 150, y: 35}
   m_SizeDelta: {x: 121, y: 128}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &854735174
@@ -2811,11 +2811,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1658379835}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 8.5}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -15, y: 220}
   m_SizeDelta: {x: 200, y: 50}
-  m_Pivot: {x: 0.5, y: 0}
+  m_Pivot: {x: 1, y: 0}
 --- !u!114 &910274834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2836,7 +2836,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Rod: Bambo Lv.1 | Boat: Wooden Raft'
+  m_text: 'Rod: Bamboo Lv.1 | Boat: Wooden Raft'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
   m_sharedMaterial: {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
@@ -2870,8 +2870,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 1024
+  m_HorizontalAlignment: 4
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -3494,7 +3494,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 425, y: 7.5}
+  m_AnchoredPosition: {x: 425, y: 20}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &991355377
@@ -3632,7 +3632,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -150, y: 40}
+  m_AnchoredPosition: {x: -150, y: 35}
   m_SizeDelta: {x: 121, y: 128}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1051906668
@@ -5891,7 +5891,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 425.2, y: 6}
+  m_AnchoredPosition: {x: 425.2, y: 23}
   m_SizeDelta: {x: 32, y: 32}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1644285977
@@ -6894,8 +6894,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeManager
   startingRod: {fileID: 11400000, guid: 4756a07a0b22a924c92b8287c2a01bd6, type: 2}
   startingBoat: {fileID: 11400000, guid: 1176327381ffc344d9abd3d1549f71bc, type: 2}
-  workerPrefabData: {fileID: 11400000, guid: f6910824a21e5fe49bc462f0858ad346, type: 2}
+  workerData: {fileID: 11400000, guid: f6910824a21e5fe49bc462f0858ad346, type: 2}
   fishingController: {fileID: 1437822675}
+  workerCostMultiplier: 1.5
 --- !u!4 &1889545461
 Transform:
   m_ObjectHideFlags: 0

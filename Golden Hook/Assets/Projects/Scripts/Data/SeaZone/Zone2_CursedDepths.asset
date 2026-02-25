@@ -17,17 +17,19 @@ MonoBehaviour:
   zoneThemeColor: {r: 0.1764706, g: 0.29803923, b: 0.78431374, a: 1}
   zoneIndex: 1
   fishPool:
-  - fishData: {fileID: 11400000, guid: 0675e44f374699b42a208a3692477d9e, type: 2}
+  - fishData: {fileID: 11400000, guid: 956d01b4125b5644eba8bf7fd1a3d2e6, type: 2}
     spawnWeightOveride: 0
   - fishData: {fileID: 11400000, guid: debfd0205cb1e0c46a4a16be1daab2d8, type: 2}
     spawnWeightOveride: 0
-  - fishData: {fileID: 11400000, guid: 956d01b4125b5644eba8bf7fd1a3d2e6, type: 2}
+  - fishData: {fileID: 11400000, guid: 0675e44f374699b42a208a3692477d9e, type: 2}
     spawnWeightOveride: 0
   - fishData: {fileID: 11400000, guid: a6e295575ec9ee349a5110d388422de7, type: 2}
     spawnWeightOveride: 0
+  - fishData: {fileID: 11400000, guid: 74f2fa1f60ff7834dab3654254daf5c9, type: 2}
+    spawnWeightOveride: 0
   - fishData: {fileID: 11400000, guid: db94642cb0107b64c83ad8607ab9bb9b, type: 2}
     spawnWeightOveride: 0
-  isUnlocked: 0
+  isUnlocked: 1
   unlockCost: 5000
   requiredZoneIndex: 0
   rareFishBonus: 5

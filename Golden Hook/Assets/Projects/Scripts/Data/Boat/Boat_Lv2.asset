@@ -20,4 +20,4 @@ MonoBehaviour:
   storageCapacity: 20
   upgradeCost: 1000
   nextUpgrade: {fileID: 11400000, guid: 92dd4422547bf4342b521458087cfc40, type: 2}
-  isUnlocked: 0
+  isUnlocked: 1
