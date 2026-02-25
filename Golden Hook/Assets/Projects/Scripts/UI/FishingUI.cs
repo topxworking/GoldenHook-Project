@@ -39,11 +39,14 @@ public class FishingUI : MonoBehaviour
     [Header("Zone Buttons")]
     [SerializeField] private List<ZoneButtonEntry> zoneButtons = new();
 
+    [Header("Debug")]
+    [SerializeField] private GameObject debugPanel;
+    [SerializeField] private Button debugMenuButton;
+
     [System.Serializable]
     public class ZoneButtonEntry
     {
         public Button button;
-        public Image buttonImage;
         public TextMeshProUGUI nameText;
         public TextMeshProUGUI costText;
         public TextMeshProUGUI activeLabel;
@@ -52,6 +55,7 @@ public class FishingUI : MonoBehaviour
 
     private bool _isAutoMode = false;
     private float _popupTimer = 0f;
+    private bool _isFishing = false;
 
     private FishingController _fishing;
     private UpgradeManager _upgrade;
@@ -67,6 +71,9 @@ public class FishingUI : MonoBehaviour
         upgradeRodButton?.onClick.AddListener(OnUpgradeRod);
         upgradeBoatButton?.onClick.AddListener(OnUpgradeBoat);
         hireCrewButton?.onClick.AddListener(OnHireWorker);
+
+        debugMenuButton?.onClick.AddListener(OnDebugMenuToggle);
+        debugPanel?.SetActive(false);
 
         foreach (var entry in zoneButtons)
         {
@@ -120,7 +127,7 @@ public class FishingUI : MonoBehaviour
         }
 
         if (passiveIncomeText != null && EconomyManager.Instance != null)
-            passiveIncomeText.text = $"+${EconomyManager.Instance.PassiveIncome:F2}/s passive income";
+            passiveIncomeText.text = $"+${EconomyManager.Instance.PassiveIncome:F2}/s passive";
     }
 
     public void SetStatus(string msg)
@@ -169,6 +176,9 @@ public class FishingUI : MonoBehaviour
         }
 
         _isAutoMode = !_isAutoMode;
+
+        if (!_isAutoMode) _isFishing = false;
+
         _fishing?.ToggleAutoFishing(_isAutoMode);
         castButton.interactable = !_isAutoMode;
         RefreshAutoButton();
@@ -245,25 +255,29 @@ public class FishingUI : MonoBehaviour
     private void OnZoneButtonPressed(ZoneButtonEntry entry)
     {
         if (entry.zoneData == null) return;
-        var zone = entry.zoneData;
 
-        Debug.Log($"[ZoneBtn] {zone.zoneName} | zoneIndex={zone.zoneIndex} | unlockCost={zone.unlockCost} | money={EconomyManager.Instance?.CurrentMoney} | isUnlocked={ZoneManager.Instance.IsZoneUnlocked(zone)}");
-
-        bool isUnlocked = ZoneManager.Instance.IsZoneUnlocked(zone);
-        bool canAfford = (EconomyManager.Instance?.CurrentMoney ?? 0) >= zone.unlockCost;
-
-        if (!isUnlocked && !canAfford)
+        if (_isAutoMode)
         {
-            SetStatus($"Need ${zone.unlockCost - (EconomyManager.Instance?.CurrentMoney ?? 0):N0} more to unlock {zone.zoneName}");
+            SetStatus("Turn off Auto Fishing before switching zones!");
             return;
         }
+
+        if (_isFishing)
+        {
+            SetStatus("Wait until fishing is done before switching zones!");
+            return;
+        }
+
+        var zone = entry.zoneData;
+
+        bool isUnlocked = ZoneManager.Instance.IsZoneUnlocked(zone);
 
         if (isUnlocked)
         {
             ZoneManager.Instance.SwitchToZone(zone);
             RefreshZoneButtons();
             return;
-        }
+        }               
 
         if (zone.requiredZoneIndex >= 0 && !ZoneManager.Instance.IsZoneUnlocked(zone.requiredZoneIndex))
         {
@@ -284,11 +298,8 @@ public class FishingUI : MonoBehaviour
         if (success)
         {
             SetStatus($"{zone.zoneName} Unlocked!");
+            zone.isUnlocked = true;
             RefreshZoneButtons();
-        }
-        else
-        {
-            SetStatus($"Need ${zone.unlockCost - (EconomyManager.Instance?.CurrentMoney ?? 0):N0} more to unlock {zone.zoneName}");
         }
     }
 
@@ -328,7 +339,7 @@ public class FishingUI : MonoBehaviour
                 entry.activeLabel.text = "Active";
             }
 
-            entry.button.interactable = isUnlocked || canAfford;
+            entry.button.interactable = true;
         }
     }
 
@@ -337,6 +348,7 @@ public class FishingUI : MonoBehaviour
         switch (state)
         {
             case FishingStateId.Idle:
+                _isFishing = false;
                 castButton?.gameObject.SetActive(true);
                 castButton.interactable = !_isAutoMode;
                 reelButton.interactable = false;
@@ -345,6 +357,7 @@ public class FishingUI : MonoBehaviour
                 break;
 
             case FishingStateId.Casting:
+                _isFishing = true;
                 castButton.interactable = false;
                 reelButton.interactable = false;
                 upgradeRodButton.interactable = false;
@@ -353,6 +366,7 @@ public class FishingUI : MonoBehaviour
                 break;
 
             case FishingStateId.Waiting:
+                _isFishing = true;
                 castButton.interactable = false;
                 reelButton.interactable = false;
                 upgradeRodButton.interactable = false;
@@ -361,6 +375,7 @@ public class FishingUI : MonoBehaviour
                 break;
 
             case FishingStateId.Hooked:
+                _isFishing = true;
                 reelButton?.gameObject.SetActive(true);
                 reelButton.interactable = !_isAutoMode;
                 upgradeRodButton.interactable = false;
@@ -369,6 +384,7 @@ public class FishingUI : MonoBehaviour
                 break;
 
             case FishingStateId.ReelIn:
+                _isFishing = true;
                 reelButton.interactable = false;
                 upgradeRodButton.interactable = false;
                 upgradeBoatButton.interactable = false;
@@ -408,5 +424,17 @@ public class FishingUI : MonoBehaviour
         if (autoModePopup == null) return;
 
         autoModePopup.SetActive(isAuto);
+    }
+
+    private void OnDebugMenuToggle()
+    {
+        if (debugPanel == null) return;
+        debugPanel.SetActive(!debugPanel.activeSelf);
+    }
+
+    public void DebugAddMoney(int amount)
+    {
+        EconomyManager.Instance?.AddMoney(amount);
+        SetStatus($"[DEBUG] +${amount:N0} added");
     }
 }

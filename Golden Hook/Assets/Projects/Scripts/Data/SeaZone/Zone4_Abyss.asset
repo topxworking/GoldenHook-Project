@@ -30,5 +30,5 @@ MonoBehaviour:
   isUnlocked: 0
   unlockCost: 500000
   requiredZoneIndex: 2
-  rareFishBonus: 0.2
-  incomeMultiplier: 1
+  rareFishBonus: 20
+  incomeMultiplier: 8

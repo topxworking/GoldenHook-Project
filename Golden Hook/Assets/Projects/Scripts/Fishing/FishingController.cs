@@ -116,11 +116,13 @@ public class FishingController : MonoBehaviour
 
         FishPool.Instance?.Get(fish.Data, transform.position + fishSpawnOffset);
 
+        int finalPrice = Mathf.RoundToInt(fish.SellPrice * _currentZone.incomeMultiplier);
+
         EventManager.Publish(new FishCaughtEvent
         {
             FishData = fish.Data,
             Weight = fish.Weight,
-            SellPrice = fish.SellPrice,
+            SellPrice = finalPrice,
         });
 
         fishingUI?.ShowCatchResult(fish);

@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     private const string KEY_ROD_INDEX  = "save_rod_index";
     private const string KEY_BOAT_INDEX = "save_boat_index";
     private const string KEY_WORKER_COUNT    = "save_worker_count";
-    private const string KEY_ZONE_PREFIX = "save_zone_";
+    private const string KEY_ZONE_PREFIX = "save_zone";
 
     private void Awake()
     {
@@ -58,10 +58,15 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt(KEY_BOAT_INDEX, GetBoatIndex());
         PlayerPrefs.SetInt(KEY_WORKER_COUNT, upgradeManager?.WorkerCount ?? 0);
 
-        var unlocked = zoneManager?.GetUnlockedIndexes() ?? new List<int>();
-        PlayerPrefs.SetString("save_zone", string.Join(",", unlocked));
+        var indexes = new List<int>();
+        foreach (var zone in zoneManager.GetAllZones())
+            if (ZoneManager.Instance.IsZoneUnlocked(zone))
+                indexes.Add(zone.zoneIndex);
+
+        PlayerPrefs.SetString("save_zone", string.Join(",", indexes));
 
         PlayerPrefs.Save();
+        Debug.Log($"[Save] money={EconomyManager.Instance?.CurrentMoney} | zones={string.Join(",", indexes)}");
     }
 
     public void LoadGame()
@@ -86,13 +91,21 @@ public class GameManager : MonoBehaviour
         ApplyBoatIndex(boatIndex);
         Debug.Log($"[Load] boatIndex={boatIndex}");
 
-        string zonesStr = PlayerPrefs.GetString("save_zones", "0");
+        string zonesStr = PlayerPrefs.GetString("save_zones", "");
         var indexes = new List<int>();
-        foreach (var s in zonesStr.Split(','))
-            if (int.TryParse(s.Trim(), out int idx))
-                indexes.Add(idx);
-        zoneManager?.LoadUnlockedZones(indexes);
+        foreach (var zone in zoneManager.GetAllZones())
+            if (zone.isUnlocked)
+                indexes.Add(zone.zoneIndex);
         Debug.Log($"[Load] zones={zonesStr}");
+
+        if (!string.IsNullOrEmpty(zonesStr))
+        {
+            foreach (var s in zonesStr.Split(','))
+                if (int.TryParse(s.Trim(), out int idx) && !indexes.Contains(idx))
+                    indexes.Add(idx);
+        }
+
+        zoneManager?.LoadUnlockedZones(indexes);
 
         int workerCount = PlayerPrefs.GetInt(KEY_WORKER_COUNT, 0);
         for (int i = 0; i < workerCount; i++)

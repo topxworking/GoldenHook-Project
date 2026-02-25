@@ -125,16 +125,17 @@ public class UpgradeManager : MonoBehaviour
         RecalculatePassiveIncome();
     }
 
-    // Passive Income Calcutation
     public void RecalculatePassiveIncome()
     {
         float income = 0f;
 
-        foreach (var worker in _hiredWorkers)
-            income += worker.incomeBonus * (CurrentBoat?.incomeMultiplier ?? 1f) * 10f;
+        float zoneMultiplier = ZoneManager.Instance?.CurrentZone?.incomeMultiplier ?? 1f;
 
+        foreach (var worker in _hiredWorkers)
+            income += worker.incomeBonus * (CurrentBoat?.incomeMultiplier ?? 1f) * zoneMultiplier * 10f;
+
+        Debug.Log($"[Passive] workers={_hiredWorkers.Count} | zoneMult={zoneMultiplier} | income={income}");
         EconomyManager.Instance?.SetPassiveIncome(income);
-        Debug.Log($"[Upgrade] Passive income/s = ${income:F2}");
     }
 
     public int GetRodUpgradeCost()  => CurrentRod?.nextUpgrade?.upgradeCost ?? -1;
@@ -145,5 +146,4 @@ public class UpgradeManager : MonoBehaviour
     public bool CanHireWorker()     => _hiredWorkers.Count < (CurrentBoat?.workerSlots ?? 1);
     public int WorkerCount          => _hiredWorkers.Count;
     public int MaxWorkers           => CurrentBoat?.workerSlots ?? 1;
-
 }
