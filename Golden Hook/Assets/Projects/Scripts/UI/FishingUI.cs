@@ -53,6 +53,10 @@ public class FishingUI : MonoBehaviour
     [SerializeField] private Button debugConfirmButton;
     [SerializeField] private Button debugCancelButton;
 
+    [SerializeField] private RectTransform mainMenuPanel;
+    [SerializeField] private Button playButton;
+    [SerializeField] private float transitionDuration = 0.8f;
+
     [Header("Quit Dialog")]
     [SerializeField] private GameObject quitDialogPanel;
     [SerializeField] private Button quitButton;
@@ -104,6 +108,7 @@ public class FishingUI : MonoBehaviour
         debugCancelButton?.onClick.AddListener(OnDebugCancel);
         debugInputField?.onSubmit.AddListener(_ => OnDebugConfirm());
 
+        playButton?.onClick.AddListener(OnPlayPressed);
         quitButton?.onClick.AddListener(OnQuitPressed);
         confirmQuitButton?.onClick.AddListener(OnConfirmQuit);
         cancelQuitButton?.onClick.AddListener(OnCancelQuit);
@@ -137,8 +142,6 @@ public class FishingUI : MonoBehaviour
 
         catchPopupPanel?.SetActive(false);
         reelPrompt?.SetActive(false);
-
-        StartCoroutine(InitAfterManager());
     }
 
     private System.Collections.IEnumerator InitAfterManager()
@@ -565,5 +568,36 @@ public class FishingUI : MonoBehaviour
     private void OnCancelQuit()
     {
         quitDialogPanel?.SetActive(false);
+    }
+
+    private void OnPlayPressed()
+    {
+        StartCoroutine(TransitionToGame());
+    }
+
+    private IEnumerator TransitionToGame()
+    {
+        playButton.interactable = false;
+
+        float elaped = 0f;
+        float startY = mainMenuPanel.anchoredPosition.y;
+        float targetY = Screen.height;
+
+        while (elaped < transitionDuration)
+        {
+            elaped += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elaped / transitionDuration);
+
+            mainMenuPanel.anchoredPosition = new Vector2(
+                mainMenuPanel.anchoredPosition.x,
+                Mathf.Lerp(startY, targetY, t)
+                );
+
+            yield return null;
+        }
+
+        mainMenuPanel.gameObject.SetActive(false);
+
+        StartCoroutine(InitAfterManager());
     }
 }
